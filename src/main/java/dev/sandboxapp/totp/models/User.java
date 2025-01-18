@@ -1,22 +1,22 @@
 package dev.sandboxapp.totp.models;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.Setter;
-import org.springframework.data.annotation.CreatedDate;
-import org.springframework.data.annotation.LastModifiedDate;
-import org.springframework.data.jpa.domain.support.AuditingEntityListener;
 
-import java.time.LocalDateTime;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.UUID;
 
 @Getter
+@Setter
 @Entity
 @Table(name = "users")
-@EntityListeners(AuditingEntityListener.class)
-public class User {
+public class User extends Base{
   @Id
   @GeneratedValue(strategy = GenerationType.AUTO)
+  @JsonIgnore
   private UUID id;
 
   @Column(
@@ -24,24 +24,28 @@ public class User {
     nullable = false,
     length = 255
   )
-  @Setter
-  private String username;
-
-  @Column(
-    unique = true,
-    nullable = false,
-    length = 255
-  )
-  @Setter
   private String email;
 
-  @CreatedDate
-  @Column(updatable = false, nullable = false)
-  @Setter
-  private LocalDateTime createdAt;
+  @Column
+  private String firstName;
 
-  @LastModifiedDate
-  @Column(updatable = true, nullable = false)
-  @Setter
-  private LocalDateTime updatedAt;
+  @Column
+  private String lastName;
+
+  @Column(nullable = false, unique = true, length = 15)
+  private String phoneNumber;
+
+  @Column
+  private String gender;
+
+  @OneToMany(mappedBy = "user", cascade = CascadeType.ALL, orphanRemoval = true)
+  private List<Account> accounts = new ArrayList<>();
+
+  @JsonIgnore
+  @OneToMany(mappedBy = "user", cascade = CascadeType.ALL, orphanRemoval = true)
+  private List<Device> devices;
+
+  @JsonIgnore
+  @OneToMany(mappedBy = "user", cascade = CascadeType.ALL, orphanRemoval = true)
+  private List<UserDeviceSession> userDeviceSessions;
 }

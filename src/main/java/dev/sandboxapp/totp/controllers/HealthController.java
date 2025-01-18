@@ -1,4 +1,4 @@
-package dev.sandboxapp.totp.web.controllers;
+package dev.sandboxapp.totp.controllers;
 
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RestController;

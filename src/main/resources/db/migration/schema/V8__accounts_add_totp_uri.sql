@@ -1,0 +1,7 @@
+ALTER TABLE accounts
+  DROP COLUMN account_name,
+  DROP COLUMN totp_secret,
+  ADD COLUMN name VARCHAR(255),
+  ADD COLUMN digits INT DEFAULT 6,
+  ADD COLUMN period INT DEFAULT 30,
+  ADD COLUMN secret VARCHAR(500) NOT NULL;
