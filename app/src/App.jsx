@@ -1,8 +1,6 @@
-import './App.css'
-
 function App() {
   return (
-    <p className="text-3xl font-bold underline">Hello world!</p>
+    <p className="text-md">Hello world!</p>
   )
 }
 
