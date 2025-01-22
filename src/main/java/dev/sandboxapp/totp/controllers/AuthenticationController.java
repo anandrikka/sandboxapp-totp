@@ -6,12 +6,9 @@ import dev.sandboxapp.totp.models.User;
 import dev.sandboxapp.totp.repositories.UserRepository;
 import dev.sandboxapp.totp.services.AuthenticationService;
 import dev.sandboxapp.totp.services.JwtTokenService;
-import dev.sandboxapp.totp.services.UserService;
+import dev.sandboxapp.totp.utils.AuthUtils;
 import lombok.AllArgsConstructor;
 import org.springframework.http.ResponseEntity;
-import org.springframework.security.core.Authentication;
-import org.springframework.security.core.context.SecurityContextHolder;
-import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.web.bind.annotation.*;
 
 @AllArgsConstructor
@@ -21,7 +18,6 @@ public class AuthenticationController {
 
   private final UserRepository userRepo;
   private final AuthenticationService authService;
-  private final UserService userService;
   private final JwtTokenService jwtTokenService;
 
   @PostMapping("/signup")
@@ -42,10 +38,7 @@ public class AuthenticationController {
 
   @GetMapping("/refresh_token")
   String refreshToken() throws CodeGenerationException {
-    var username = userService.getAuthenticatedUsername();
-    if (username != null) {
-      return jwtTokenService.generateToken(username);
-    }
-    return "";
+    var username = AuthUtils.authenticatedUser();
+    return jwtTokenService.generateToken(username);
   }
 }
