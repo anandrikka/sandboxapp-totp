@@ -35,7 +35,9 @@ public class SecurityConfiguration {
             "/",
             "/index.html",
             "/assets/**",
-            "/api/v1/auth/**"
+            "/api/v1/auth/signup",
+            "/api/v1/auth/signin",
+            "/api/v1/auth/verify"
           ).permitAll()
           .anyRequest().authenticated()
       )

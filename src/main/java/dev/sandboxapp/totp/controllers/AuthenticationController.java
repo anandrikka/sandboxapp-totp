@@ -5,26 +5,24 @@ import dev.sandboxapp.totp.dto.requests.SignInRequest;
 import dev.sandboxapp.totp.models.User;
 import dev.sandboxapp.totp.repositories.UserRepository;
 import dev.sandboxapp.totp.services.AuthenticationService;
+import dev.sandboxapp.totp.services.JwtTokenService;
+import dev.sandboxapp.totp.services.UserService;
+import lombok.AllArgsConstructor;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.context.SecurityContextHolder;
+import org.springframework.security.core.userdetails.UserDetails;
+import org.springframework.web.bind.annotation.*;
 
+@AllArgsConstructor
 @RestController
 @RequestMapping("/api/v1/auth")
 public class AuthenticationController {
 
   private final UserRepository userRepo;
   private final AuthenticationService authService;
-
-  AuthenticationController(
-    UserRepository userRepo,
-    AuthenticationService authService
-  ) {
-    this.userRepo = userRepo;
-    this.authService = authService;
-  }
+  private final UserService userService;
+  private final JwtTokenService jwtTokenService;
 
   @PostMapping("/signup")
   User createNewUser(@RequestBody User user) {
@@ -40,5 +38,14 @@ public class AuthenticationController {
   @PostMapping("/verify")
   String verifyOtp(@RequestBody SignInRequest request)  throws Exception {
     return authService.verifySignInOtp(request.emailOrPhoneNumber(), request.code());
+  }
+
+  @GetMapping("/refresh_token")
+  String refreshToken() throws CodeGenerationException {
+    var username = userService.getAuthenticatedUsername();
+    if (username != null) {
+      return jwtTokenService.generateToken(username);
+    }
+    return "";
   }
 }

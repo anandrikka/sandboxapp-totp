@@ -2,9 +2,9 @@ spring:
   application:
     name: sandboxapp-totp
   datasource:
-    url: jdbc:postgresql://localhost:5432/sandboxapp
-    username: totp_admin
-    password: password
+    url: ${DATABASE_URL:jdbc:postgresql://localhost:5432/sandboxapp}
+    username: ${DATABASE_USERNAME:totp_admin}
+    password: ${DATABASE_PASSWORD:password}
     driver-class-name: org.postgresql.Driver
     hikari:
       connectionTimeout: 20000
