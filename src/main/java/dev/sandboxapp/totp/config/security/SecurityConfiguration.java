@@ -1,6 +1,7 @@
 package dev.sandboxapp.totp.config.security;
 
 import dev.sandboxapp.totp.services.UserDetailsServiceImpl;
+import jakarta.servlet.DispatcherType;
 import lombok.AllArgsConstructor;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -30,6 +31,9 @@ public class SecurityConfiguration {
       .csrf(AbstractHttpConfigurer::disable)
       .authorizeHttpRequests(customizer ->
         customizer
+          // By default, spring protects all dispatcher types assuming every forwarding route might be protected
+          // In my case I need to ignore error, because it's only Rest API.
+          .dispatcherTypeMatchers(DispatcherType.ERROR).permitAll()
           .requestMatchers(
             "/heartbeat",
             "/",
@@ -51,10 +55,5 @@ public class SecurityConfiguration {
     DaoAuthenticationProvider authProvider = new DaoAuthenticationProvider();
     authProvider.setUserDetailsService(userDetailsService);
     return authProvider;
-  }
-
-  @Bean
-  public AuthenticationManager authenticationManager(AuthenticationConfiguration config) throws Exception {
-    return config.getAuthenticationManager();
   }
 }
