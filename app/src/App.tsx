@@ -1,6 +1,9 @@
+import './App.css'
+
 function App() {
+
   return (
-    <p className="text-md">Hello world!</p>
+    <div>Hello World!!</div>
   )
 }
 
