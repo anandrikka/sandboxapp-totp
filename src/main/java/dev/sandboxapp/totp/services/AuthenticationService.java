@@ -1,5 +1,6 @@
 package dev.sandboxapp.totp.services;
 
+import dev.samstevens.totp.code.CodeGenerator;
 import dev.samstevens.totp.code.CodeVerifier;
 import dev.samstevens.totp.code.DefaultCodeGenerator;
 import dev.samstevens.totp.code.DefaultCodeVerifier;
@@ -9,20 +10,19 @@ import dev.samstevens.totp.time.TimeProvider;
 import dev.sandboxapp.totp.models.User;
 import dev.sandboxapp.totp.repositories.UserRepository;
 import jakarta.persistence.EntityNotFoundException;
+import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Service;
 
 import java.util.logging.Logger;
 
+@AllArgsConstructor
 @Service
 public class AuthenticationService {
 
   private final UserRepository userRepo;
-
-  AuthenticationService(
-    UserRepository userRepo
-  ) {
-    this.userRepo = userRepo;
-  }
+  private final TotpService totpService;
+  private final JwtTokenService jwtTokenService;
+  private final int TIME_PERIOD = 10 * 60; // 10 minutes
 
   public User getUser(String emailOrPhoneNumber) {
     return userRepo
@@ -32,20 +32,14 @@ public class AuthenticationService {
 
   public String generateSignInOtp(String emailOrPhoneNumber) throws CodeGenerationException {
     var user = getUser(emailOrPhoneNumber);
-    var timeProvider = new SystemTimeProvider();
-    long currentTimeSeconds = timeProvider.getTime();
-    long counter = currentTimeSeconds / 30;
-    var codeGenerator = new DefaultCodeGenerator();
-    return codeGenerator.generate(user.getId().toString(), counter);
+    return this.totpService.generateSignInOtp(user.getId().toString(), TIME_PERIOD);
   }
 
-  public boolean verifySignInOtp(String emailOrPhoneNumber, String otp) {
+  public String verifySignInOtp(String emailOrPhoneNumber, String otp) throws Exception {
     var user = getUser(emailOrPhoneNumber);
-    var timeProvider = new SystemTimeProvider();
-    var codeGenerator = new DefaultCodeGenerator();
-    DefaultCodeVerifier verifier = new DefaultCodeVerifier(codeGenerator, timeProvider);
-    verifier.setTimePeriod(30);
-    verifier.setAllowedTimePeriodDiscrepancy(1);
-    return verifier.isValidCode(user.getId().toString(), otp);
+    if (this.totpService.verifySignInOtp(user.getId().toString(), otp, TIME_PERIOD)) {
+      return jwtTokenService.generateToken(emailOrPhoneNumber);
+    }
+    throw new Exception("Invalid sign in otp");
   }
 }

@@ -38,7 +38,7 @@ public class AuthenticationController {
   }
 
   @PostMapping("/verify")
-  Boolean verifyOtp(@RequestBody SignInRequest request)  throws CodeGenerationException {
+  String verifyOtp(@RequestBody SignInRequest request)  throws Exception {
     return authService.verifySignInOtp(request.emailOrPhoneNumber(), request.code());
   }
 }

@@ -22,14 +22,14 @@ public class Account extends Base{
   @Column
   private String issuer;
 
-  @Column(nullable = false)
+  @Column(nullable = false, updatable = false)
   private String secret;
 
   @Column
-  private Integer digits;
+  private Integer digits = 6;
 
   @Column
-  private Integer period;
+  private Integer period = 30;
 
   @ManyToOne
   @JoinColumn(nullable = false, name = "user_id")
