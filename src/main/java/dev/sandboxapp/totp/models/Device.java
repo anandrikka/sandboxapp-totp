@@ -28,7 +28,4 @@ public class Device extends Auditable {
   @ManyToOne
   @JoinColumn(name = "user_id")
   public User user;
-
-  @OneToMany(mappedBy = "device", cascade = CascadeType.ALL, orphanRemoval = true)
-  public List<UserDeviceSession> userDeviceSessions;
 }

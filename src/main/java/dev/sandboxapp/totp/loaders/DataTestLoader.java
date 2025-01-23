@@ -3,10 +3,8 @@ package dev.sandboxapp.totp.loaders;
 import dev.sandboxapp.totp.models.Account;
 import dev.sandboxapp.totp.models.Device;
 import dev.sandboxapp.totp.models.User;
-import dev.sandboxapp.totp.models.UserDeviceSession;
 import dev.sandboxapp.totp.repositories.AccountRepository;
 import dev.sandboxapp.totp.repositories.DeviceRepository;
-import dev.sandboxapp.totp.repositories.UserDeviceSessionRepository;
 import dev.sandboxapp.totp.repositories.UserRepository;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.stereotype.Component;
@@ -17,18 +15,15 @@ public class DataTestLoader implements CommandLineRunner {
   private final UserRepository userRepo;
   private final AccountRepository accountRepo;
   private final DeviceRepository deviceRepo;
-  private final UserDeviceSessionRepository userSessionRepo;
 
   public DataTestLoader(
     UserRepository userRepo,
     AccountRepository accountRepo,
-    DeviceRepository deviceRepo,
-    UserDeviceSessionRepository userSessionRepo
+    DeviceRepository deviceRepo
   ) {
     this.userRepo = userRepo;
     this.accountRepo = accountRepo;
     this.deviceRepo = deviceRepo;
-    this.userSessionRepo = userSessionRepo;
   }
 
   @Override
@@ -64,12 +59,5 @@ public class DataTestLoader implements CommandLineRunner {
     device.setDeviceName("bac");
     this.deviceRepo.save(device);
     return device;
-  }
-
-  void createUserSession(User user, Device device) {
-    UserDeviceSession userSession = new UserDeviceSession();
-    userSession.setDevice(device);
-    userSession.setUser(user);
-    userSessionRepo.save(userSession);
   }
 }

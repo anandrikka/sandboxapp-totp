@@ -1,6 +1,7 @@
 package dev.sandboxapp.totp.services;
 
 import dev.sandboxapp.totp.config.JwtProperties;
+import dev.sandboxapp.totp.models.User;
 import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.Jwts;
 import io.jsonwebtoken.security.Keys;
@@ -17,7 +18,7 @@ public class JwtTokenService {
 
   private final JwtProperties jwtProperties;
 
-  public String generateToken(String username) {
+  public String generateToken(User user) {
     long EXPIRATION_TIME = jwtProperties.getExpirationTime() * 1000L;
     Map<String, String> claims = new HashMap<>();
     return Jwts
@@ -25,7 +26,7 @@ public class JwtTokenService {
       .claims()
       .add(claims)
       .issuer("sandboxapp.dev")
-      .subject(username)
+      .subject(user.usableId())
       .issuedAt(new Date())
       .expiration(new Date(System.currentTimeMillis() + EXPIRATION_TIME))
       .and()

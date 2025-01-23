@@ -24,13 +24,13 @@ public class AuthenticationService {
 
   public String generateSignInOtp(String emailOrPhoneNumber) throws CodeGenerationException {
     var user = getUser(emailOrPhoneNumber);
-    return this.totpService.generateSignInOtp(user.getId().toString(), TIME_PERIOD);
+    return this.totpService.generateSignInOtp(user.usableId(), TIME_PERIOD);
   }
 
   public String verifySignInOtp(String emailOrPhoneNumber, String otp) throws Exception {
     var user = getUser(emailOrPhoneNumber);
-    if (this.totpService.verifySignInOtp(user.getId().toString(), otp, TIME_PERIOD)) {
-      return jwtTokenService.generateToken(emailOrPhoneNumber);
+    if (this.totpService.verifySignInOtp(user.usableId(), otp, TIME_PERIOD)) {
+      return jwtTokenService.generateToken(user);
     }
     throw new Exception("Invalid sign in otp");
   }

@@ -27,11 +27,18 @@ React, Spring Boot, Spring JPA, Java, Postgres, JWT
 
 **Authentication**
 
-| HTTP_METHOD | API                   | DESCRIPTION                                                                  |
-|-------------|-----------------------|------------------------------------------------------------------------------|
-| POST        | /api/v1/auth/register | Register a new user.                                                         |
-| POST        | /api/v1/auth/login    | Authenticate a user by sending a secure code to their email or phone number. 
-| POST        | /api/v1/auth/verify   | Verify the secure code and return a JWT token.                               
+| HTTP_METHOD | API                             | DESCRIPTION                                                                  |
+|-------------|---------------------------------|------------------------------------------------------------------------------|
+| POST        | /api/v1/auth/register           | Register a new user.                                                         |
+| POST        | /api/v1/auth/login_token        | Authenticate a user by sending a secure code to their email or phone number. |
+| POST        | /api/v1/auth/verify_login_token | Verify the secure code and return a JWT token.                               |
+
+**Users**
+
+| HTTP_METHOD | API                | DESCRIPTION         |
+|-------------|--------------------|---------------------|
+| PUT         | /api/v1/users/{id} | Update User profile |
+| DELETE      | /api/v1/users/{id} | Delete User         |
 
 **Account Management**
 

@@ -42,7 +42,7 @@ public class User extends Auditable {
   @OneToMany(mappedBy = "user", cascade = CascadeType.ALL, orphanRemoval = true)
   public List<Device> devices;
 
-  @JsonIgnore
-  @OneToMany(mappedBy = "user", cascade = CascadeType.ALL, orphanRemoval = true)
-  public List<UserDeviceSession> userDeviceSessions;
+  public String usableId() {
+    return id != null ? id.toString() : null;
+  }
 }

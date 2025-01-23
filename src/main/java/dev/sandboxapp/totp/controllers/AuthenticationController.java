@@ -39,6 +39,6 @@ public class AuthenticationController {
   @GetMapping("/refresh_token")
   String refreshToken() throws CodeGenerationException {
     var username = AuthUtils.authenticatedUser();
-    return jwtTokenService.generateToken(username);
+    return "";
   }
 }
