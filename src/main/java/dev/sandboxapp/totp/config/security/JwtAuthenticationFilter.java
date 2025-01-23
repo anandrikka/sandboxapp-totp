@@ -26,7 +26,10 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
 
   @Override
   protected void doFilterInternal(HttpServletRequest request, HttpServletResponse response, FilterChain filterChain) throws ServletException, IOException {
-    String token = getJwtFromHeader(request);
+    String token = null;
+    if (isBackendDevelopment()) {
+      token = getJwtFromHeader(request);
+    }
     if (token == null) {
       token = getJwtFromCookie(request);
     }
@@ -62,4 +65,10 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
     }
     return null;
   }
+
+  private boolean isBackendDevelopment() {
+    String activeProfile = System.getProperty("spring.profiles.active", "default");
+    return "backend-testing".equals(activeProfile);
+  }
+
 }
