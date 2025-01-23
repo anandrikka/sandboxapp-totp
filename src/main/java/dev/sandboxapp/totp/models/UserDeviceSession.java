@@ -11,22 +11,22 @@ import java.util.UUID;
 @Table(name = "user_device_sessions")
 @Setter
 @Getter
-public class UserDeviceSession extends Base {
+public class UserDeviceSession extends Auditable {
   @Id
   @GeneratedValue(strategy = GenerationType.UUID)
-  private UUID id;
-
-  @Column(unique = true, nullable = false)
-  private String refreshToken;
-
-  @Column(nullable = false)
-  private LocalDateTime refreshTokenExpiresAt;
+  public UUID id;
 
   @ManyToOne
   @JoinColumn(name = "user_id")
-  private User user;
+  public User user;
 
   @ManyToOne
   @JoinColumn(name = "device_id")
-  private Device device;
+  public Device device;
+
+  @Column
+  public LocalDateTime refreshUntil;
+
+  @Column
+  public Boolean rememberMe;
 }

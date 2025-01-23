@@ -1,5 +1,6 @@
 package dev.sandboxapp.totp.models;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.Column;
 import jakarta.persistence.EntityListeners;
 import jakarta.persistence.MappedSuperclass;
@@ -15,12 +16,14 @@ import java.time.LocalDateTime;
 @Setter
 @Getter
 @EntityListeners(AuditingEntityListener.class)
-public abstract class Base {
+public abstract class Auditable {
+  @JsonIgnore
   @Column(nullable = false, updatable = false)
   @CreatedDate
-  private LocalDateTime createdAt;
+  public LocalDateTime createdAt;
 
+  @JsonIgnore
   @Column(nullable = false, updatable = true)
   @LastModifiedDate
-  private LocalDateTime updatedAt;
+  public LocalDateTime updatedAt;
 }

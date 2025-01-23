@@ -13,39 +13,36 @@ import java.util.UUID;
 @Setter
 @Entity
 @Table(name = "users")
-public class User extends Base{
+public class User extends Auditable {
   @Id
   @GeneratedValue(strategy = GenerationType.AUTO)
   @JsonIgnore
-  private UUID id;
+  public UUID id;
 
   @Column(
     unique = true,
     nullable = false,
     length = 255
   )
-  private String email;
+  public String email;
 
   @Column
-  private String firstName;
+  public String firstName;
 
   @Column
-  private String lastName;
+  public String lastName;
 
-  @Column(nullable = false, unique = true, length = 15)
-  private String phoneNumber;
-
-  @Column
-  private String gender;
+  @Column(nullable = true, unique = true, length = 20)
+  public String phoneNumber;
 
   @OneToMany(mappedBy = "user", cascade = CascadeType.ALL, orphanRemoval = true)
-  private List<Account> accounts = new ArrayList<>();
+  public List<Account> accounts = new ArrayList<>();
 
   @JsonIgnore
   @OneToMany(mappedBy = "user", cascade = CascadeType.ALL, orphanRemoval = true)
-  private List<Device> devices;
+  public List<Device> devices;
 
   @JsonIgnore
   @OneToMany(mappedBy = "user", cascade = CascadeType.ALL, orphanRemoval = true)
-  private List<UserDeviceSession> userDeviceSessions;
+  public List<UserDeviceSession> userDeviceSessions;
 }

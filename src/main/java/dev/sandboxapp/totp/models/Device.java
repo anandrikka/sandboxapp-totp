@@ -1,5 +1,6 @@
 package dev.sandboxapp.totp.models;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.Setter;
@@ -11,22 +12,23 @@ import java.util.UUID;
 @Table(name = "devices")
 @Setter
 @Getter
-public class Device extends Base {
+public class Device extends Auditable {
 
   @Id
   @GeneratedValue(strategy = GenerationType.AUTO)
-  private UUID id;
+  public UUID id;
 
   @Column(nullable = false)
-  private String deviceName;
+  public String deviceName;
 
   @Column(nullable = false)
-  private String deviceToken;
+  @JsonIgnore
+  public String deviceToken;
 
   @ManyToOne
   @JoinColumn(name = "user_id")
-  private User user;
+  public User user;
 
-  @OneToMany(mappedBy = "device", cascade = CascadeType.REMOVE, orphanRemoval = true)
-  private List<UserDeviceSession> userSessions;
+  @OneToMany(mappedBy = "device", cascade = CascadeType.ALL, orphanRemoval = true)
+  public List<UserDeviceSession> userDeviceSessions;
 }

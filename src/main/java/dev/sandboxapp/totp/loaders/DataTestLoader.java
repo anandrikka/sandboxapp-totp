@@ -66,8 +66,6 @@ public class DataTestLoader implements CommandLineRunner {
     UserDeviceSession userSession = new UserDeviceSession();
     userSession.setDevice(device);
     userSession.setUser(user);
-    userSession.setRefreshToken("abc");
-    userSession.setRefreshTokenExpiresAt(LocalDateTime.now());
     userSessionRepo.save(userSession);
   }
 }

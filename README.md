@@ -26,19 +26,32 @@ React, Spring Boot, Spring JPA, Java, Postgres, JWT
 ### API Endpoints
 
 **Authentication**
-- POST /api/v1/auth/register: Register a new user. 
-- POST /api/v1/auth/login: Authenticate a user by sending a secure code to their email or phone number. 
-- POST /api/v1/auth/verify: Verify the secure code and return a JWT token.
+
+| HTTP_METHOD | API                   | DESCRIPTION                                                                  |
+|-------------|-----------------------|------------------------------------------------------------------------------|
+| POST        | /api/v1/auth/register | Register a new user.                                                         |
+| POST        | /api/v1/auth/login    | Authenticate a user by sending a secure code to their email or phone number. 
+| POST        | /api/v1/auth/verify   | Verify the secure code and return a JWT token.                               
 
 **Account Management**
-- POST /api/v1/accounts: Retreive all accounts related to user.
-- GET /api/v1/accounts/{id}/totp: Retrieve current totp for a particular account. 
-- DELETE /api/v1/accounts/{id}: Delete an account.
+
+| HTTP_METHOD | API                        | DESCRIPTION                                     |
+|-------------|----------------------------|-------------------------------------------------|
+| POST        | /api/v1/accounts           | Create an account                               |
+| GET         | /api/v1/accounts           | Retrieve all accounts for an user               |
+| GET         | /api/v1/accounts/{id}/totp | Retrieve current totp for a particular account. |
+| DELETE      | /api/v1/accounts/{id}      | Delete an account.                              |
 
 **Device Management** 
-- GET /api/v1/devices: Retrieve all devices registered to the authenticated user. 
-- DELETE /api/v1/devices/{id}: Remove a device by its ID.
+
+| HTTP_METHOD | API                  | DESCRIPTION                                                |
+|-------------|----------------------|------------------------------------------------------------|
+| GET         | /api/v1/devices      | Retrieve all devices registered to the authenticated user. |
+| DELETE      | /api/v1/devices/{id} | Remove a device by its ID.                                 |
 
 **Public Endpoints**
-- GET /: Home page.
-- GET /heartbeat: Health check endpoint.
+
+| HTTP_METHOD | API        | DESCRIPTION            |
+|-------------|------------|------------------------|
+| GET         | /          | React Frontend         |
+| GET         | /heartbeat | Health check endpoint. |
