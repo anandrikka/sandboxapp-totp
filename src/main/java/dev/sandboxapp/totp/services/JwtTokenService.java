@@ -1,9 +1,10 @@
 package dev.sandboxapp.totp.services;
 
+import dev.sandboxapp.totp.config.JwtProperties;
 import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.Jwts;
 import io.jsonwebtoken.security.Keys;
-import org.springframework.beans.factory.annotation.Value;
+import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Service;
 
 import java.util.Date;
@@ -11,13 +12,13 @@ import java.util.HashMap;
 import java.util.Map;
 
 @Service
+@AllArgsConstructor
 public class JwtTokenService {
 
-  @Value("${jwt.secret}")
-  private String secret;
+  private final JwtProperties jwtProperties;
 
   public String generateToken(String username) {
-    long EXPIRATION_TIME = 12 * 60 * 60 * 1000L;
+    long EXPIRATION_TIME = jwtProperties.getExpirationTime() * 1000L;
     Map<String, String> claims = new HashMap<>();
     return Jwts
       .builder()
@@ -28,14 +29,14 @@ public class JwtTokenService {
       .issuedAt(new Date())
       .expiration(new Date(System.currentTimeMillis() + EXPIRATION_TIME))
       .and()
-      .signWith(Keys.hmacShaKeyFor(secret.getBytes()))
+      .signWith(Keys.hmacShaKeyFor(jwtProperties.getSecret().getBytes()))
       .compact();
   }
 
   public Claims extractClaims(String token) {
     return Jwts
       .parser()
-      .verifyWith(Keys.hmacShaKeyFor(secret.getBytes()))
+      .verifyWith(Keys.hmacShaKeyFor(jwtProperties.getSecret().getBytes()))
       .build()
       .parseSignedClaims(token)
       .getPayload();

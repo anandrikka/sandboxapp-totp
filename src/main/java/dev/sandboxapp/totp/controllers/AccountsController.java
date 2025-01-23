@@ -4,9 +4,10 @@ import dev.sandboxapp.totp.dto.requests.AccountRequest;
 import dev.sandboxapp.totp.models.Account;
 import dev.sandboxapp.totp.repositories.AccountRepository;
 import lombok.AllArgsConstructor;
-import org.springframework.web.bind.annotation.*;
-
-import java.util.List;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RestController;
 
 @AllArgsConstructor
 @RestController
