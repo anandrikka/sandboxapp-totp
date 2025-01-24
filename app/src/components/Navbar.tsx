@@ -13,7 +13,7 @@ const Navbar = () => {
       {/* Navbar Header */}
       <nav
         className={clsx(
-          "fixed w-full bg-background border-b border-border z-50"
+          "fixed w-full bg-background border-b z-50"
         )}
       >
         <div className="max-w-screen-xl mx-auto px-4 lg:px-6">
@@ -119,7 +119,7 @@ const Navbar = () => {
       {/* Mobile Menu Drawer */}
       <div
         className={clsx(
-          "fixed top-0 left-0 h-full w-64 bg-background border-r border-border shadow-md transform transition-transform ease-in-out duration-300 z-40",
+          "fixed top-0 left-0 h-full w-64 bg-background border-r shadow-md transform transition-transform ease-in-out duration-300 z-40",
           isMobileMenuOpen ? "translate-x-0" : "-translate-x-full"
         )}
       >
