@@ -2,12 +2,16 @@ package dev.sandboxapp.totp.controllers;
 
 import dev.sandboxapp.totp.dto.requests.AccountRequest;
 import dev.sandboxapp.totp.models.Account;
+import dev.sandboxapp.totp.models.User;
 import dev.sandboxapp.totp.repositories.AccountRepository;
+import dev.sandboxapp.totp.utils.AuthUtils;
 import lombok.AllArgsConstructor;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.*;
+
+import java.util.List;
+import java.util.UUID;
 
 @AllArgsConstructor
 @RestController
@@ -17,12 +21,29 @@ public class AccountsController {
   private final AccountRepository accountRepo;
 
   @PostMapping("")
-  Account createAccount(@RequestBody AccountRequest request) {
-    return new Account();
+  ResponseEntity createAccount(@RequestBody AccountRequest request) {
+    var userId = AuthUtils.loggedInUserId();
+    Account account = new Account();
+    var user = new User();
+    user.setId(userId);
+    account.setUser(user);
+    account.setIssuer(request.issuer());
+    account.setName(request.name());
+    account.setSecret(request.secret());
+    account.setDigits(6);
+    account.setPeriod(30);
+    accountRepo.save(account);
+    return ResponseEntity.status(HttpStatus.CREATED).build();
   }
 
-  // @GetMapping("")
-  // List<Account> getAllAccounts() {
-  //   return accountRepo.;
-  // }
+  @DeleteMapping("/{id}")
+  void deleteAccount(@PathVariable UUID id) {
+    accountRepo.deleteById(id);
+  }
+
+  @GetMapping("")
+  List<Account> fetchAccounts() {
+    var userId = AuthUtils.loggedInUserId();
+    return accountRepo.findAllByUserId(userId);
+  }
 }

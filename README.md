@@ -1,5 +1,3 @@
-## TOTP Client Application
-
 ### Overview
 
 This project is a Time-based One-Time Password (TOTP) client application inspired by Authy and Google Authenticator. It features a React-based frontend and a Spring Boot backend, with JWT-based authentication for managing users and their associated TOTPs.
@@ -13,15 +11,30 @@ React, Spring Boot, Spring JPA, Java, Postgres, JWT
 ### Functional Requirements
 
 **User Authentication**
-- Users can register and log in to the application
-- Login is based on secure codes sent to the user's email or phone number. 
-- JWT tokens are issued and stored in cookies for authentication. 
-- Authentication relies solely on cookies for securing API communication.
+- Login is based on secure codes sent to either email or phone number.
+- JWT tokens are issued and stored in cookies for authentication.
+- Remembered devices will have longer sessions.
 
 **TOTP Management**
-- Users can generate and manage TOTPs for various applications. 
-- Each TOTP is tied to a specific user and application. 
+- Users can add accounts either through a QR code or manually.
+- Each TOTP is tied to a specific user and account.
 - The backend supports the generation of valid TOTP codes.
+- Each account shows the TOTP with a countdown timer
+
+### Technical Requirements
+
+**Authentication**
+- Use spring security for securing the API endpoints
+- Use a custom filter to intercept cookies and validate JWT
+- Exclude public endpoints like register, sign in, verification and UI from authentication
+- Set a principal to user_id for further access
+
+**Email & SMS Integration**
+- Use AWS SQS and SNS
+
+**Deployments**
+
+**Dev Experience**
 
 ### API Endpoints
 
@@ -49,7 +62,7 @@ React, Spring Boot, Spring JPA, Java, Postgres, JWT
 | GET         | /api/v1/accounts/{id}/totp | Retrieve current totp for a particular account. |
 | DELETE      | /api/v1/accounts/{id}      | Delete an account.                              |
 
-**Device Management** 
+**Device Management**
 
 | HTTP_METHOD | API                  | DESCRIPTION                                                |
 |-------------|----------------------|------------------------------------------------------------|
@@ -62,3 +75,7 @@ React, Spring Boot, Spring JPA, Java, Postgres, JWT
 |-------------|------------|------------------------|
 | GET         | /          | React Frontend         |
 | GET         | /heartbeat | Health check endpoint. |
+
+### Database Schema
+
+![image](https://github.com/user-attachments/assets/970eeb4a-35e0-4746-bfd9-e22af811af46)

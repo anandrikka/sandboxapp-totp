@@ -88,15 +88,18 @@ public class AuthenticationController {
       request.authToken(),
       LocalDateTime.now()
     ).orElseThrow(() -> new Exception("Login failed."));
-    var device = new Device();
-    device.setUser(user);
-    device.setDeviceName("Demo");
-    device.setDeviceToken(request.deviceToken());
-    device.setRememberMe(request.rememberMe());
-    if (request.rememberMe()) {
-      device.setRefreshToken(AuthUtils.randomToken());
+    var resiteredDevice = deviceRepo.findByUserIdAndDeviceToken(user.getId(), request.deviceToken());
+    if (resiteredDevice.isEmpty()) {
+      var device = new Device();
+      device.setUser(user);
+      device.setDeviceName("Demo");
+      device.setDeviceToken(request.deviceToken());
+      device.setRememberMe(request.rememberMe());
+      if (request.rememberMe()) {
+        device.setRefreshToken(AuthUtils.randomToken());
+      }
+      deviceRepo.save(device);
     }
-    deviceRepo.save(device);
     return jwtTokenService.generateToken(user);
   }
 }

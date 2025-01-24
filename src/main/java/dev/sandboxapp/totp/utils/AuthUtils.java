@@ -8,15 +8,16 @@ import java.nio.charset.StandardCharsets;
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
 import java.security.SecureRandom;
+import java.util.UUID;
 import java.util.stream.Collectors;
 import java.util.stream.IntStream;
 
 public class AuthUtils {
 
-  public static String loggedInUserId() {
+  public static UUID loggedInUserId() {
     Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
     Object principal = authentication.getPrincipal();
-    return principal.toString();
+    return UUID.fromString(principal.toString());
   }
 
   public static String generateLoginToken() {
