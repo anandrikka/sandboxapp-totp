@@ -38,7 +38,6 @@ public class DataTestLoader implements CommandLineRunner {
     this.userRepo.deleteAll();
     User user = new User();
     user.setEmail("anand.demo@outlook.com");
-    user.setPhoneNumber("+17813539780");
     this.userRepo.save(user);
     return user;
   }

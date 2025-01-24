@@ -5,7 +5,6 @@ import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.Setter;
 
-import java.util.List;
 import java.util.UUID;
 
 @Entity
@@ -25,7 +24,15 @@ public class Device extends Auditable {
   @JsonIgnore
   public String deviceToken;
 
+  @Column(updatable = false)
+  @JsonIgnore
+  public String refreshToken;
+
+  @Column
+  public boolean rememberMe;
+
   @ManyToOne
   @JoinColumn(name = "user_id")
+  @JsonIgnore
   public User user;
 }

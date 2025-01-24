@@ -32,8 +32,8 @@ public class User extends Auditable {
   @Column
   public String lastName;
 
-  @Column(nullable = true, unique = true, length = 20)
-  public String phoneNumber;
+  @Column
+  public boolean activated = false;
 
   @OneToMany(mappedBy = "user", cascade = CascadeType.ALL, orphanRemoval = true)
   public List<Account> accounts = new ArrayList<>();
