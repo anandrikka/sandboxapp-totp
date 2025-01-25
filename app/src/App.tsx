@@ -4,7 +4,7 @@ function App() {
   return (
     <div>
       <Navbar />
-      <div style={{ height: '1500px', paddingTop: '65px' }}>
+      <div className="max-w-screen-xl mx-auto pt-16 px-4">
         <h1>asdasd</h1>
       </div>
     </div>
