@@ -41,7 +41,7 @@ export function ThemeProvider({
       root.classList.add(systemTheme)
       return
     }
-    root.classList.add(theme)
+    root.classList.add('dark')
   }, [theme])
 
   const value = {

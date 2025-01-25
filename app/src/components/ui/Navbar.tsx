@@ -1,7 +1,7 @@
 export default function Navbar() {
   return (
-    <nav className="fixed w-full bg-background shadow-md z-50">
-      <div className="max-w-screen-xl flex flex-wrap items-center justify-between mx-auto p-3">
+    <nav className="fixed w-full bg-background shadow-sm z-50">
+      <div className="max-w-(--breakpoint-xl) flex flex-wrap items-center justify-between mx-auto p-3">
         <span className="self-center text-foreground text-xl font-semibold whitespace-nowrap">
           TOTP Generator
         </span>
@@ -12,7 +12,7 @@ export default function Navbar() {
             <span className="w-8 h-8 rounded-full self-center content-center font-semibold text-md text-background">AR</span>
           </button>
           <div
-            className="z-51 absolute top-8 right-0 my-4 text-base list-none bg-secondary divide-y divide-secondary-foreground rounded-lg shadow-sm "
+            className="z-51 absolute top-8 right-0 my-4 text-base list-none bg-secondary divide-y divide-secondary-foreground rounded-lg shadow-xs "
             id="user-dropdown">
             <div className="px-4 py-3">
               <span className="block text-sm text-gray-900 dark:text-white">Bonnie Green</span>
