@@ -1,9 +1,11 @@
+import { FormattedMessage } from 'react-intl';
+
 export default function Navbar() {
   return (
     <nav className="fixed w-full shadow-sm z-50">
       <div className="max-w-(--breakpoint-xl) flex flex-wrap items-center justify-between mx-auto p-3">
         <span className="self-center text-xl font-semibold whitespace-nowrap">
-          TOTP Generator
+          <FormattedMessage id="nav.brand.title" />
         </span>
         <div className="relative">
           <button type="button"
@@ -11,7 +13,7 @@ export default function Navbar() {
             <span className="w-8 h-8 rounded-full self-center content-center font-semibold text-md text-background">AR</span>
           </button>
           <div
-            className="hidden z-51 absolute top-8 right-0 my-4 text-base bg-secondary divide-y divide-secondary-foreground rounded-lg shadow-xs">
+            className="z-51 absolute top-8 right-0 my-4 text-base bg-secondary divide-y divide-secondary-foreground rounded-lg shadow-xs hidden">
             <div className="px-4 py-3">
               <span className="block text-sm ">Bonnie Green</span>
               <span className="block text-sm  ">name@flowbite.com</span>
@@ -19,20 +21,19 @@ export default function Navbar() {
             <ul className="py-2">
               <li>
                 <a href="#"
-                   className="block px-4 py-2 hover:bg-popover">Dashboard</a>
+                   className="block px-4 py-2 hover:bg-background">Dashboard</a>
               </li>
               <li>
                 <a href="#"
-                   className="block px-4 py-2 hover:bg-popover">Settings</a>
+                   className="block px-4 py-2 hover:bg-background">Settings</a>
               </li>
               <li>
                 <a href="#"
-                   className="block px-4 py-2 hover:bg-popover">Earnings</a>
+                   className="block px-4 py-2 hover:bg-background">Earnings</a>
               </li>
               <li>
                 <a href="#"
-                   className="block px-4 py-2 hover:bg-popover">Sign
-                  out</a>
+                   className="block px-4 py-2 hover:bg-background">Signout</a>
               </li>
             </ul>
           </div>
