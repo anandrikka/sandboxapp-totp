@@ -10,7 +10,7 @@ import { FormattedMessage } from 'react-intl';
 export default function Navbar({ profile }) {
   return (
     <nav className="fixed w-full shadow-sm z-50 bg-background">
-      <div className="max-w-(--breakpoint-xl) flex flex-wrap items-center justify-between mx-auto p-3">
+      <div className="max-w-(--breakpoint-xl) flex flex-wrap items-center justify-between mx-auto p-4">
         <span className="self-center text-xl font-semibold whitespace-nowrap">
           <FormattedMessage id="app.title" />
         </span>

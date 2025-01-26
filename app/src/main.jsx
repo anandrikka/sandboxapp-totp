@@ -4,9 +4,9 @@ import './index.css'
 import App from './App.jsx'
 import { IntlProvider } from 'react-intl';
 import messages from './messages.json';
-import { ThemeProvider } from '@/components/ThemeProvider.jsx';
+import { ThemeProvider } from '@/components/providers/ThemeProvider.jsx';
 import { BrowserRouter } from 'react-router-dom';
-import AuthProvider from '@/components/AuthProvider.jsx';
+import AuthProvider from '@/components/providers/AuthProvider.jsx';
 import FingerprintJS from '@fingerprintjs/fingerprintjs';
 
 (async () => {
