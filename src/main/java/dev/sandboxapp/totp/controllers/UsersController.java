@@ -2,6 +2,7 @@ package dev.sandboxapp.totp.controllers;
 
 import dev.sandboxapp.totp.models.User;
 import dev.sandboxapp.totp.repositories.UserRepository;
+import dev.sandboxapp.totp.utils.AuthUtils;
 import lombok.AllArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -15,12 +16,19 @@ public class UsersController {
 
   private final UserRepository userRepo;
 
-  @PutMapping("/{id}")
-  ResponseEntity<User> updateUser(@PathVariable String id) {
-    return ResponseEntity.ok(userRepo.findById(UUID.fromString(id)).get());
+  @PutMapping("")
+  ResponseEntity<User> updateUser() {
+    var id = AuthUtils.loggedInUserId();
+    return ResponseEntity.ok(userRepo.findById(id).get());
   }
 
-  @DeleteMapping("/{id}")
-  void deleteUser(@PathVariable String id) {}
+  @DeleteMapping()
+  void deleteUser() {}
+
+  @GetMapping("/self")
+  ResponseEntity<User> self() {
+    var id = AuthUtils.loggedInUserId();
+    return ResponseEntity.ok(userRepo.findById(id).get());
+  }
 
 }
