@@ -1,4 +1,4 @@
-import { useLogout } from '@/components/providers/AuthProvider.jsx';
+import { useLogout } from '@/hooks/use-user.js';
 
 export default function useFetcher() {
   const logout = useLogout();

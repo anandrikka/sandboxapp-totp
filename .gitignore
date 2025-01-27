@@ -34,3 +34,4 @@ build/
 
 ### UI Code ###
 src/main/resources/static
+node_modules

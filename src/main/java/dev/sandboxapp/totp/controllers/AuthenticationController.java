@@ -102,4 +102,7 @@ public class AuthenticationController {
     }
     return jwtTokenService.generateToken(user);
   }
+
+  @GetMapping("/invalidate_token")
+  void invalidateToken() {}
 }

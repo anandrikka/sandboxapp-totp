@@ -1,0 +1,8 @@
+@import '../../global.css';
+
+.btn {
+  @apply px-4 py-2 rounded-md text-sm font-medium cursor-pointer;
+}
+.primary {
+  @apply bg-primary text-primary-foreground hover:bg-primary/90 h-9;
+}

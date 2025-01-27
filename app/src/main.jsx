@@ -6,7 +6,7 @@ import { IntlProvider } from 'react-intl';
 import messages from './messages.json';
 import { ThemeProvider } from '@/components/providers/ThemeProvider.jsx';
 import { BrowserRouter } from 'react-router-dom';
-import AuthProvider from '@/components/providers/AuthProvider.jsx';
+import UserProvider from '@/components/providers/UserProvider.jsx';
 import FingerprintJS from '@fingerprintjs/fingerprintjs';
 
 (async () => {
@@ -17,9 +17,9 @@ import FingerprintJS from '@fingerprintjs/fingerprintjs';
       <IntlProvider locale="en" messages={ messages }>
         <ThemeProvider>
           <BrowserRouter>
-            <AuthProvider>
+            <UserProvider>
               <App />
-            </AuthProvider>
+            </UserProvider>
           </BrowserRouter>
         </ThemeProvider>
       </IntlProvider>
