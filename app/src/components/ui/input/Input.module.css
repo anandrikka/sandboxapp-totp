@@ -1,0 +1,5 @@
+@import '../../../global.css';
+
+.root {
+  @apply bg-transparent h-9 px-3 py-1 rounded-md w-full text-base shadow-sm placeholder:text-muted-foreground md:text-sm border border-input focus-visible:outline-none focus-visible:ring-1;
+}

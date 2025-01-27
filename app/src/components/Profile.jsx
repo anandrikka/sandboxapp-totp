@@ -1,4 +1,8 @@
+import { useUser } from '@/hooks/use-user.js';
+import { Link } from 'react-router-dom';
+
 export default function Profile() {
+  const { user } = useUser();
   return (
     <div className="relative">
       <button type="button"
@@ -8,25 +12,18 @@ export default function Profile() {
       <div
         className="z-51 absolute top-8 right-0 my-4 text-base bg-secondary divide-y divide-secondary-foreground rounded-lg shadow-xs hidden">
         <div className="px-4 py-3">
-          <span className="block text-sm">Bonnie Green</span>
-          <span className="block text-sm">name@flowbite.com</span>
+          <span className="block text-sm">{`${user.firstName} ${user.lastName}`}</span>
+          <span className="block text-sm">${user.email}</span>
         </div>
         <ul className="py-2">
           <li>
-            <a href="#"
-               className="block px-4 py-2 hover:bg-background">Dashboard</a>
+            <Link to="/profile" className="block px-4 py-2 hover:bg-background">Profile</Link>
           </li>
           <li>
-            <a href="#"
-               className="block px-4 py-2 hover:bg-background">Settings</a>
+            <Link to="/devices" className="block px-4 py-2 hover:bg-background">Devices</Link>
           </li>
           <li>
-            <a href="#"
-               className="block px-4 py-2 hover:bg-background">Earnings</a>
-          </li>
-          <li>
-            <a href="#"
-               className="block px-4 py-2 hover:bg-background">Signout</a>
+            <Link to="/login" className="block px-4 py-2 hover:bg-background">Logout</Link>
           </li>
         </ul>
       </div>
