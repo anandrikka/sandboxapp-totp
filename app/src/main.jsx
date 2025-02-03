@@ -14,15 +14,15 @@ import FingerprintJS from '@fingerprintjs/fingerprintjs';
   window.fingerprintjs = await fp.get();
   createRoot(document.getElementById('root')).render(
     <StrictMode>
-      <IntlProvider locale="en" messages={ messages }>
-        <ThemeProvider>
+      <UserProvider>
+        <IntlProvider locale="en" messages={ messages }>
           <BrowserRouter>
-            <UserProvider>
+            <ThemeProvider>
               <App />
-            </UserProvider>
+            </ThemeProvider>
           </BrowserRouter>
-        </ThemeProvider>
-      </IntlProvider>
+        </IntlProvider>
+      </UserProvider>
     </StrictMode>
   )
 })();

@@ -25,6 +25,8 @@ export default function UserProvider({ children }) {
     }).finally(() => setCheckCompleted(true))
   }, []);
 
+  console.log('her...')
+
   return (
     <UserContext.Provider value={ userContextValue }>
       <LogoutContext.Provider value = { logout }>
