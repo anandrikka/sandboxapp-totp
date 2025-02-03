@@ -6,23 +6,21 @@ import { IntlProvider } from 'react-intl';
 import messages from './messages.json';
 import { ThemeProvider } from '@/components/providers/ThemeProvider.jsx';
 import { BrowserRouter } from 'react-router-dom';
-import UserProvider from '@/components/providers/UserProvider.jsx';
-import FingerprintJS from '@fingerprintjs/fingerprintjs';
+import { UserProvider } from '@/components/providers/UserProvider.jsx';
+import { loadConfig } from '@/lib/config.js';
 
-(async () => {
-  const fp = await FingerprintJS.load();
-  window.fingerprintjs = await fp.get();
+loadConfig().then(() => {
   createRoot(document.getElementById('root')).render(
-    <StrictMode>
-      <UserProvider>
-        <IntlProvider locale="en" messages={ messages }>
-          <BrowserRouter>
-            <ThemeProvider>
+    <UserProvider>
+      <IntlProvider locale="en" messages={ messages }>
+        <BrowserRouter>
+          <ThemeProvider>
+            <StrictMode>
               <App />
-            </ThemeProvider>
-          </BrowserRouter>
-        </IntlProvider>
-      </UserProvider>
-    </StrictMode>
+            </StrictMode>
+          </ThemeProvider>
+        </BrowserRouter>
+      </IntlProvider>
+    </UserProvider>
   )
-})();
+});

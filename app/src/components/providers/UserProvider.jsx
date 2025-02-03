@@ -1,37 +1,48 @@
 import {
-  useCallback,
+  useCallback, useContext,
   useEffect,
   useMemo,
-  useState
+  useState,
+  createContext
 } from 'react';
 import { fetchUser } from '@/lib/auth.js';
-import { LogoutContext, UserContext } from '@/lib/contexts.js';
 
-export default function UserProvider({ children }) {
+const UserContext = createContext(null);
+const LogoutContext = createContext(null);
+
+export function UserProvider({ children }) {
   const [user, setUser] = useState(null);
-  const [checkCompleted, setCheckCompleted] = useState(false);
+  const [userChecked, setUserChecked] = useState(false);
 
   const logout = useCallback(() => {
     setUser(() => null)
   }, [])
 
-  const userContextValue = useMemo(() => {
-    return { user, checkCompleted, setUser }
-  }, [user, checkCompleted, setUser])
-
   useEffect(() => {
     fetchUser().then((response) => {
       setUser(response.data)
-    }).finally(() => setCheckCompleted(true))
+    }).finally(() => setUserChecked(true))
   }, []);
 
-  console.log('her...')
+  const value = useMemo(() => {
+    return { user, userChecked }
+  }, [user, userChecked]);
+
+  console.log('user provider..')
 
   return (
-    <UserContext.Provider value={ userContextValue }>
+    <UserContext.Provider value={ value }>
       <LogoutContext.Provider value = { logout }>
         { children }
       </LogoutContext.Provider>
     </UserContext.Provider>
   )
+}
+
+export function useUser() {
+  return useContext(UserContext);
+}
+
+export function useLogout() {
+  return useContext(LogoutContext);
 }

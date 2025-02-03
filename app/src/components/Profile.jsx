@@ -1,5 +1,5 @@
-import { useUser } from '@/hooks/use-user.js';
 import { Link } from 'react-router-dom';
+import { useUser } from '@/components/providers/UserProvider.jsx';
 
 export default function Profile() {
   const { user } = useUser();

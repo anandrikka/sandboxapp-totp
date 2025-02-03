@@ -1,5 +1,5 @@
 import { Navigate, Outlet } from 'react-router-dom';
-import { useUser } from '@/hooks/use-user.js';
+import { useUser } from '@/components/providers/UserProvider.jsx';
 
 export default function Authenticated() {
   const { user } = useUser();

@@ -7,26 +7,24 @@ import Authenticated from '@/components/Authenticated.jsx';
 import Login from '@/pages/Login.jsx';
 import Signup from '@/pages/Signup.jsx';
 import Unauthenticate from '@/components/Unauthenticate.jsx';
-import { useUser } from '@/hooks/use-user.js';
+import { useUser } from '@/components/providers/UserProvider.jsx';
 
 function App() {
-  const { checkCompleted, user } = useUser();
+  const { userChecked, user } = useUser();
   return (
     <div className="w-full h-full">
-      <Navbar showProfile={ checkCompleted && !!user } />
+      <Navbar showProfile={ userChecked && !!user } />
       <div className="max-w-(--breakpoint-xl) mx-auto px-4 pt-20">
         {
-          checkCompleted && (
+          userChecked && (
             <Routes>
               <Route element={ <Authenticated /> }>
                 <Route index element={ <Accounts /> } />
                 <Route path="devices" element={ <Devices /> } />
                 <Route path="profile" element={ <Profile /> } />
               </Route>
-              <Route element={ <Unauthenticate /> }>
-                <Route path="login" Component={ Login } />
-                <Route path="signup" Component={ Signup } />
-              </Route>
+              <Route path="login" Component={ Login } />
+              <Route path="signup" Component={ Signup } />
             </Routes>
           )
         }
