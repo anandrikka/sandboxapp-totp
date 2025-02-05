@@ -22,6 +22,18 @@ spring:
     enabled: true
     locations: classpath:db/migration/schema,classpath:db/migration/data
     validate-on-migrate: true
+  mail:
+    host: smtp.mailgun.org
+    port: 587
+    username: noreply@mail.sandboxapp.dev
+    password: ${EMAIL_PASSWORD}
+    properties:
+      mail:
+        smtp:
+          auth: true
+          starttls:
+            enable: true
+          timeout: 5000
 
 jwt:
   expiration_time: ${JWT_EXPIRATION_TIME:8640000}

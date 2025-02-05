@@ -9,15 +9,17 @@ import dev.sandboxapp.totp.models.User;
 import dev.sandboxapp.totp.repositories.AccessTokenRepository;
 import dev.sandboxapp.totp.repositories.DeviceRepository;
 import dev.sandboxapp.totp.repositories.UserRepository;
-import dev.sandboxapp.totp.services.AuthenticationService;
+import dev.sandboxapp.totp.services.EmailService;
 import dev.sandboxapp.totp.services.JwtTokenService;
 import dev.sandboxapp.totp.utils.AuthUtils;
 import jakarta.validation.Valid;
 import lombok.AllArgsConstructor;
-import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
+import java.util.HashMap;
+import java.util.Map;
 
 @AllArgsConstructor
 @RestController
@@ -25,10 +27,11 @@ import java.time.LocalDateTime;
 public class AuthenticationController {
 
   private final UserRepository userRepo;
-  private final AuthenticationService authService;
+  // private final AuthenticationService authService;
   private final AccessTokenRepository accessTokenRepo;
   private final JwtTokenService jwtTokenService;
   private final DeviceRepository deviceRepo;
+  private final EmailService emailService;
 
   @PostMapping("/signup")
   String createNewUser(@RequestBody @Valid SignupRequest request) throws Exception {
@@ -48,8 +51,8 @@ public class AuthenticationController {
 
   @GetMapping("/verify_signup")
   Boolean verifySignup(
-    @RequestParam(name = "email", required = true) String email,
-    @RequestParam(name = "token", required = true) String token) throws Exception {
+    @RequestParam(name = "email") String email,
+    @RequestParam(name = "token") String token) throws Exception {
     var user = userRepo.findByEmail(email).orElseThrow(() -> new Exception("Invalid Request."));
     if (user.isActivated()) {
       throw new Exception("Already activated.");
@@ -63,7 +66,7 @@ public class AuthenticationController {
   }
 
   @PostMapping("/signin")
-  ResponseEntity<String> signInUser(@RequestBody SignInRequest request) throws Exception {
+  void signInUser(@RequestBody SignInRequest request) throws Exception {
     var user = userRepo.findByEmail(request.email()).orElseThrow(() -> new Exception("Unable to find user"));
     if (!user.isActivated()) {
       throw new Exception("Activate user before login");
@@ -76,7 +79,13 @@ public class AuthenticationController {
       LocalDateTime.now().plusMinutes(10)
     );
     accessTokenRepo.save(accessToken);
-    return ResponseEntity.ok(accessToken.getAuthToken());
+    Map<String, Object> inputs = new HashMap<>();
+    inputs.put("name", user.getFirstName() + " " + user.getLastName());
+    inputs.put("otp", loginToken);
+    DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd MMM yyyy HH:mm");
+    String formattedDate = LocalDateTime.now().format(formatter);
+    inputs.put("date", formattedDate);
+    emailService.sendEmail(request.email(), "Login OTP", "one-time-password", inputs);
   }
 
   @PostMapping("/verify_signin")
