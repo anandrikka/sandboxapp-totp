@@ -16,31 +16,37 @@ import java.util.UUID;
 public class User extends Auditable {
   @Id
   @GeneratedValue(strategy = GenerationType.AUTO)
-  @JsonIgnore
-  public UUID id;
+  private UUID id;
 
   @Column(
     unique = true,
     nullable = false,
     length = 255
   )
-  public String email;
+  private String email;
 
   @Column
-  public String firstName;
+  private String firstName;
 
   @Column
-  public String lastName;
+  private String lastName;
 
   @Column
-  public boolean activated = false;
+  private boolean activated = false;
 
   @OneToMany(mappedBy = "user", cascade = CascadeType.ALL, orphanRemoval = true)
-  public List<Account> accounts = new ArrayList<>();
+  private List<Account> accounts = new ArrayList<>();
 
+  @OneToMany(mappedBy = "user", cascade = CascadeType.ALL, orphanRemoval = true)
+  private List<Device> devices;
+
+  @OneToMany(mappedBy = "user", cascade = CascadeType.ALL, orphanRemoval = true)
   @JsonIgnore
+  private List<AccessToken> accessTokens;
+
   @OneToMany(mappedBy = "user", cascade = CascadeType.ALL, orphanRemoval = true)
-  public List<Device> devices;
+  @JsonIgnore
+  private List<ActivationToken> activationTokens;
 
   public String usableId() {
     return id != null ? id.toString() : null;

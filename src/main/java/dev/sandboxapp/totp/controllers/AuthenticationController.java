@@ -27,7 +27,6 @@ import java.util.Map;
 public class AuthenticationController {
 
   private final UserRepository userRepo;
-  // private final AuthenticationService authService;
   private final AccessTokenRepository accessTokenRepo;
   private final JwtTokenService jwtTokenService;
   private final DeviceRepository deviceRepo;
@@ -72,12 +71,7 @@ public class AuthenticationController {
       throw new Exception("Activate user before login");
     }
     var loginToken = AuthUtils.generateLoginToken();
-    var accessToken = new AccessToken(
-      user,
-      request.deviceToken(),
-      loginToken,
-      LocalDateTime.now().plusMinutes(10)
-    );
+    var accessToken = new AccessToken();
     accessTokenRepo.save(accessToken);
     Map<String, Object> inputs = new HashMap<>();
     inputs.put("name", user.getFirstName() + " " + user.getLastName());

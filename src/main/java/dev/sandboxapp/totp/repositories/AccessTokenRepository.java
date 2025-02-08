@@ -12,7 +12,7 @@ import java.util.UUID;
 @Repository
 public interface AccessTokenRepository extends CrudRepository<AccessToken, UUID> {
 
-  @Query("Select acc_token from AccessToken acc_token where acc_token.user.id = :userId and acc_token.deviceToken = :deviceToken and acc_token.authToken = :authToken and acc_token.expiresAt > :now")
+  @Query("Select acc_token from AccessToken acc_token where acc_token.user.id = :userId and acc_token.authToken = :authToken and acc_token.expiresAt > :now")
   Optional<AccessToken> findValidAccessToken(
     UUID userId,
     String deviceToken,

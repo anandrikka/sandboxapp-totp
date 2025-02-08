@@ -18,7 +18,7 @@ public class AuthenticationService {
 
   public User getUser(String emailOrPhoneNumber) {
     return userRepo
-      .findByEmailOrPhoneNumber(emailOrPhoneNumber)
+      .findByEmail(emailOrPhoneNumber)
       .orElseThrow(() -> new EntityNotFoundException("User not found: " + emailOrPhoneNumber));
   }
 
