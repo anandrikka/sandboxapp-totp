@@ -5,7 +5,7 @@ export default function useFetcher() {
   async function request(url, options) {
     const defaultHeaders = {
       'Content-Type': 'application/json',
-      'X-VISITOR-ID': window.fingerprintjs.visitorId
+      'X-USER-IDENTIFIER': window.fingerprintVisitorId
     };
     const {
       headers = {},

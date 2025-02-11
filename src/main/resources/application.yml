@@ -38,3 +38,6 @@ spring:
 jwt:
   expiration_time: ${JWT_EXPIRATION_TIME:8640000}
   secret: ${JWT_SECRET:not_a_secret_and_easily_hacked_and_it_satisfies_the_requirement}
+
+host:
+  identifier: ${HOST_URL:http://localhost:8081}

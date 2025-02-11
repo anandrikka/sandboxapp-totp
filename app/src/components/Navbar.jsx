@@ -1,5 +1,6 @@
 import { FormattedMessage } from 'react-intl';
 import Profile from '@/components/Profile.jsx';
+import ThemeToggler from '@/components/ThemeToggler.jsx';
 
 /**
  * Renders a fixed navigation bar with a title and a profile section.
@@ -15,7 +16,10 @@ export default function Navbar({ showProfile }) {
         <span className="self-center text-xl font-semibold whitespace-nowrap">
           <FormattedMessage id="app.title" />
         </span>
-        { showProfile && <Profile /> }
+        <div className="flex gap-2 items-center">
+          <ThemeToggler />
+          <Profile />
+        </div>
       </div>
     </nav>
   )

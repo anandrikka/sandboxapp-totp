@@ -32,7 +32,7 @@ public class SecurityConfiguration {
         customizer
           // By default, spring protects all dispatcher types assuming every forwarding route might be protected
           // In my case I need to ignore error, because it's only Rest API.
-          // .dispatcherTypeMatchers(DispatcherType.ERROR).permitAll()
+          .dispatcherTypeMatchers(DispatcherType.ERROR).permitAll()
           .requestMatchers(
             "/heartbeat",
             "/",

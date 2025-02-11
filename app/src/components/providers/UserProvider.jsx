@@ -12,28 +12,22 @@ const LogoutContext = createContext(null);
 
 export function UserProvider({ children }) {
   const [user, setUser] = useState(null);
-  const [userChecked, setUserChecked] = useState(false);
+  const [loaded, setLoaded] = useState(false);
 
   const logout = useCallback(() => {
     setUser(() => null)
-  }, [])
+  }, []);
 
   useEffect(() => {
     fetchUser().then((response) => {
       setUser(response.data)
-    }).finally(() => setUserChecked(true))
+    }).finally(() => setLoaded(true))
   }, []);
 
-  const value = useMemo(() => {
-    return { user, userChecked }
-  }, [user, userChecked]);
-
-  console.log('user provider..')
-
   return (
-    <UserContext.Provider value={ value }>
+    <UserContext.Provider value={ user }>
       <LogoutContext.Provider value = { logout }>
-        { children }
+        { loaded && children }
       </LogoutContext.Provider>
     </UserContext.Provider>
   )

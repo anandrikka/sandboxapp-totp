@@ -25,10 +25,10 @@ public class User extends Auditable {
   )
   private String email;
 
-  @Column
+  @Column(nullable = false)
   private String firstName;
 
-  @Column
+  @Column(nullable = false)
   private String lastName;
 
   @Column
@@ -38,7 +38,7 @@ public class User extends Auditable {
   private List<Account> accounts = new ArrayList<>();
 
   @OneToMany(mappedBy = "user", cascade = CascadeType.ALL, orphanRemoval = true)
-  private List<Device> devices;
+  private List<Device> devices = new ArrayList<>();
 
   @OneToMany(mappedBy = "user", cascade = CascadeType.ALL, orphanRemoval = true)
   @JsonIgnore
@@ -46,7 +46,7 @@ public class User extends Auditable {
 
   @OneToMany(mappedBy = "user", cascade = CascadeType.ALL, orphanRemoval = true)
   @JsonIgnore
-  private List<ActivationToken> activationTokens;
+  private List<ActivationToken> activationTokens = new ArrayList<>();;
 
   public String usableId() {
     return id != null ? id.toString() : null;

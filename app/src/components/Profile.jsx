@@ -2,7 +2,8 @@ import { Link } from 'react-router-dom';
 import { useUser } from '@/components/providers/UserProvider.jsx';
 
 export default function Profile() {
-  const { user } = useUser();
+  const user = useUser();
+
   return (
     <div className="relative">
       <button type="button"
@@ -10,10 +11,10 @@ export default function Profile() {
         <span className="w-8 h-8 rounded-full self-center content-center font-semibold text-md text-background">AR</span>
       </button>
       <div
-        className="z-51 absolute top-8 right-0 my-4 text-base bg-secondary divide-y divide-secondary-foreground rounded-lg shadow-xs hidden">
+        className="min-w-60 z-51 absolute top-8 right-0 my-4 text-base bg-secondary divide-y divide-secondary-foreground rounded-lg shadow-xs hidden">
         <div className="px-4 py-3">
-          <span className="block text-sm">{`${user.firstName} ${user.lastName}`}</span>
-          <span className="block text-sm">${user.email}</span>
+          <span className="block text-sm">{`${user?.firstName} ${user?.lastName}`}</span>
+          <span className="block text-sm">{user?.email}</span>
         </div>
         <ul className="py-2">
           <li>

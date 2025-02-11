@@ -27,9 +27,6 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
   @Override
   protected void doFilterInternal(HttpServletRequest request, HttpServletResponse response, FilterChain filterChain) throws ServletException, IOException {
     String token = getJwtFromCookie(request);;
-    if (isBackendDevelopment()) {
-      token = getJwtFromHeader(request);
-    }
     if (token != null) {
       if (!jwtTokenService.expired(token)) {
         var username = jwtTokenService.username(token);

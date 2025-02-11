@@ -28,17 +28,6 @@ public class AuthUtils {
       .collect(Collectors.joining());
   }
 
-  public static String generateSignupValidationToken(String token) throws NoSuchAlgorithmException {
-    MessageDigest digest = MessageDigest.getInstance("SHA-256");
-    byte[] hashBytes = digest.digest(token.getBytes(StandardCharsets.UTF_8));
-    char[] hashHex = Hex.encode(hashBytes);
-    return String.valueOf(hashHex);
-  }
-
-  public static boolean verifySignupValidationToken(String userId, String token) throws NoSuchAlgorithmException{
-    return generateSignupValidationToken(userId).equals(token);
-  }
-
   public static String randomToken() {
     SecureRandom secureRandom = new SecureRandom();
     byte[] randomBytes = new byte[64];
