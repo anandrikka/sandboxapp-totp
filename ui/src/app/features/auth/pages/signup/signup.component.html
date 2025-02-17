@@ -1,0 +1,8 @@
+<div>
+  <form [formGroup]="signupForm">
+    <input type="text" formControlName="firstName" />
+    <input type="text" formControlName="lastName" />
+    <input type="email" formControlName="email" />
+    <button type="submit" (click)="submit()">Signup</button>
+  </form>
+</div>
