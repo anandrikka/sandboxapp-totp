@@ -1,5 +1,7 @@
 package dev.sandboxapp.totp.utils;
 
+import jakarta.servlet.http.Cookie;
+import jakarta.servlet.http.HttpServletRequest;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.crypto.codec.Hex;
@@ -39,5 +41,21 @@ public class AuthUtils {
       result.append(charSet.charAt(index % charSet.length()));
     }
     return result.toString();
+  }
+
+  public static String getDeviceToken(HttpServletRequest request) {
+    return request.getHeader("X-VISITOR-ID");
+  }
+
+  public static String getCookie(String name, HttpServletRequest request) {
+    Cookie[] cookies = request.getCookies();
+    if (cookies != null) {
+      for (Cookie cookie : cookies) {
+        if (name.equals(cookie.getName())) {
+          return cookie.getValue();
+        }
+      }
+    }
+    return null;
   }
 }

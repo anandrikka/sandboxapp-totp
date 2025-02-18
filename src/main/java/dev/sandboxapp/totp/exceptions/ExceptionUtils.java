@@ -42,4 +42,12 @@ public class ExceptionUtils {
       .meta("token", token)
     );
   }
+
+  public static void raiseRefreshFailed() {
+    throw new GlobalException(builder -> builder
+      .code("token.refresh_failed")
+      .status(HttpStatus.UNAUTHORIZED)
+      .message("Unauthorized User.")
+    );
+  }
 }

@@ -37,4 +37,8 @@ export class AuthApiService extends ApiService {
       })
     );
   }
+
+  refreshToken() {
+    return this.httpClient.get(this.buildUrl('/refresh_token'))
+  }
 }

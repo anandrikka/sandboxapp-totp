@@ -22,6 +22,7 @@ import org.springframework.transaction.annotation.Transactional;
 
 import java.time.LocalDateTime;
 import java.util.HashMap;
+import java.util.UUID;
 
 @RequiredArgsConstructor
 @Service
@@ -98,7 +99,7 @@ public class AuthenticationService {
   }
 
   @Transactional
-  public String verifySignInToken(SignInVerificationRequest request, String deviceName, String deviceToken) {
+  public Device verifySignInToken(SignInVerificationRequest request, String deviceName, String deviceToken) {
     var user = userRepo.findByEmail(request.email()).orElseThrow(() -> ExceptionUtils.userNotFound(request.email()));
     var accessToken = accessTokenRepo.findValidAccessToken(user.getId(), deviceToken, request.otp())
       .orElseThrow(() -> ExceptionUtils.tokenNotFound(request.email(), request.otp()));
@@ -117,7 +118,24 @@ public class AuthenticationService {
     accessToken.setUsedAt(LocalDateTime.now());
     accessTokenRepo.save(accessToken);
     deviceRepo.save(device);
-    return jwtTokenService.generateToken(user);
+    return device;
+  }
+
+  public User verifyDeviceForRefreshToken(String deviceId, String deviceToken) {
+    if (deviceId == null) {
+      ExceptionUtils.raiseRefreshFailed();
+    }
+    var device = deviceRepo.findById(UUID.fromString(deviceId));
+    if (device.isEmpty()) {
+      ExceptionUtils.raiseRefreshFailed();
+    }
+    if (!device.get().getDeviceToken().equals(deviceToken)) {
+      ExceptionUtils.raiseRefreshFailed();
+    }
+    if (!device.get().isRememberMe() || device.get().getRememberUntil().isBefore(LocalDateTime.now())) {
+      ExceptionUtils.raiseRefreshFailed();
+    }
+    return device.get().getUser();
   }
 
   private void sendActivationEmail(User user, String token) throws MessagingException {

@@ -1,6 +1,7 @@
 package dev.sandboxapp.totp.config.security;
 
 import dev.sandboxapp.totp.services.JwtTokenService;
+import dev.sandboxapp.totp.utils.AuthUtils;
 import jakarta.servlet.FilterChain;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.http.Cookie;
@@ -26,7 +27,7 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
 
   @Override
   protected void doFilterInternal(HttpServletRequest request, HttpServletResponse response, FilterChain filterChain) throws ServletException, IOException {
-    String token = getJwtFromCookie(request);;
+    String token = AuthUtils.getCookie("_auth", request);;
     if (token != null) {
       if (!jwtTokenService.expired(token)) {
         var username = jwtTokenService.username(token);
@@ -38,18 +39,6 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
       }
     }
     filterChain.doFilter(request, response);
-  }
-
-  private String getJwtFromCookie(HttpServletRequest request) {
-    Cookie[] cookies = request.getCookies();
-    if (cookies != null) {
-      for (Cookie cookie : cookies) {
-        if ("_auth".equals(cookie.getName())) {
-          return cookie.getValue();
-        }
-      }
-    }
-    return null;
   }
 
   private String getJwtFromHeader(HttpServletRequest request) {
