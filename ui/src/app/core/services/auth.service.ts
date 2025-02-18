@@ -1,23 +1,22 @@
 import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
-import { catchError, map } from 'rxjs';
 import { Router } from '@angular/router';
+import { UserApiService } from '../../features/users/user-api.service';
 
 @Injectable({
   providedIn: 'root'
 })
 export class AuthService {
-  loggedIn = false;
+  user: any = {};
   constructor(
     private httpClient: HttpClient,
-    private router: Router
+    private router: Router,
+    private userApiService: UserApiService
   ) {}
 
   self() {
-    this.httpClient.get('/api/v1/users/self').subscribe((response) => {
-      console.log(response);
-    }, (error) => {
-      this.router.navigate(['/login'])
+    this.userApiService.self().then((response) => {
+      this.user = response;
     });
   }
 }

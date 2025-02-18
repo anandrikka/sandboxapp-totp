@@ -1,12 +1,12 @@
 import { Routes } from '@angular/router';
 import { AccountsComponent } from './features/accounts/pages/accounts/accounts.component';
 import { AccountDetailsComponent } from './features/accounts/pages/accounts/account-details/account-details.component';
-import { ProfileDetailsComponent } from './features/profile/pages/profile-details/profile-details.component';
 import { SignupComponent } from './features/auth/pages/signup/signup.component';
 import { LoginComponent } from './features/auth/pages/login/login.component';
 import { SignupVerificationComponent } from './features/auth/pages/signup-verification/signup-verification.component';
 import { BaseComponent } from './layouts/base/base.component';
 import { DevicesComponent } from './features/devices/pages/devices/devices.component';
+import { ProfileDetailsComponent } from './features/users/pages/profile-details/profile-details.component';
 
 export const routes: Routes = [
   {

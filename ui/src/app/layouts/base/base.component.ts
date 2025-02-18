@@ -14,6 +14,6 @@ export class BaseComponent implements OnInit {
   constructor(private authService: AuthService) {}
 
   ngOnInit() {
-    this.authService.self();
+    // this.authService.self();
   }
 }
