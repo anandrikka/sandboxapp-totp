@@ -1,11 +1,16 @@
 package dev.sandboxapp.totp.services;
 
 import dev.samstevens.totp.exceptions.CodeGenerationException;
+import dev.sandboxapp.totp.dto.requests.SignInVerificationRequest;
 import dev.sandboxapp.totp.dto.requests.SignupRequest;
 import dev.sandboxapp.totp.exceptions.ExceptionUtils;
+import dev.sandboxapp.totp.models.AccessToken;
 import dev.sandboxapp.totp.models.ActivationToken;
+import dev.sandboxapp.totp.models.Device;
 import dev.sandboxapp.totp.models.User;
+import dev.sandboxapp.totp.repositories.AccessTokenRepository;
 import dev.sandboxapp.totp.repositories.ActivationTokenRepository;
+import dev.sandboxapp.totp.repositories.DeviceRepository;
 import dev.sandboxapp.totp.repositories.UserRepository;
 import dev.sandboxapp.totp.utils.AuthUtils;
 import jakarta.mail.MessagingException;
@@ -28,6 +33,8 @@ public class AuthenticationService {
   private final ActivationTokenRepository activationTokenRepo;
   private final int TIME_PERIOD = 10 * 60; // 10 minutes
   private final EmailService emailService;
+  private final DeviceRepository deviceRepo;
+  private final AccessTokenRepository accessTokenRepo;
 
   @Value("${host.identifier}")
   private String host;
@@ -75,6 +82,44 @@ public class AuthenticationService {
     sendActivationEmail(user, newToken.getToken());
   }
 
+  @Transactional
+  public void sendSignInToken(String email, String deviceToken) throws MessagingException {
+    var user = userRepo.findByEmail(email).orElseThrow(() -> ExceptionUtils.userNotFound(email));
+    var token = AuthUtils.generateLoginToken();
+    accessTokenRepo.markAllTokensAsUsed(user.getId(), LocalDateTime.now());
+    var accessToken = AccessToken.builder()
+      .authToken(token)
+      .expiresAt(LocalDateTime.now().plusMinutes(10))
+      .deviceToken(deviceToken)
+      .user(user)
+      .build();
+    accessTokenRepo.save(accessToken);
+    sendLoginOTP(user, token);
+  }
+
+  @Transactional
+  public String verifySignInToken(SignInVerificationRequest request, String deviceName, String deviceToken) {
+    var user = userRepo.findByEmail(request.email()).orElseThrow(() -> ExceptionUtils.userNotFound(request.email()));
+    var accessToken = accessTokenRepo.findValidAccessToken(user.getId(), deviceToken, request.otp())
+      .orElseThrow(() -> ExceptionUtils.tokenNotFound(request.email(), request.otp()));
+    if (LocalDateTime.now().isAfter(accessToken.getExpiresAt())) {
+      ExceptionUtils.raiseTokenExpired(request.email(), request.otp());
+    }
+    var device = deviceRepo.findByUserIdAndDeviceToken(user.getId(), deviceToken).orElse(
+      Device.builder()
+        .user(user)
+        .deviceName(deviceName)
+        .deviceToken(deviceToken)
+        .build()
+    );
+    device.setRememberMe(request.rememberMe());
+    device.setRememberUntil(request.rememberMe() ? LocalDateTime.now().plusDays(30) : null);
+    accessToken.setUsedAt(LocalDateTime.now());
+    accessTokenRepo.save(accessToken);
+    deviceRepo.save(device);
+    return jwtTokenService.generateToken(user);
+  }
+
   private void sendActivationEmail(User user, String token) throws MessagingException {
     var emailInputs = new HashMap<String, Object>();
     emailInputs.put("activationCode", token);
@@ -82,6 +127,14 @@ public class AuthenticationService {
     emailInputs.put("requestHost", host);
     var emailBody = emailService.generateEmailBody("activation-email", emailInputs);
     emailService.sendEmail(user.getEmail(), "Authy Demo: Activate your account", emailBody);
+  }
+
+  private void sendLoginOTP(User user, String token) throws MessagingException {
+    var emailInputs = new HashMap<String, Object>();
+    emailInputs.put("loginToken", token);
+    emailInputs.put("user", user);
+    var emailBody = emailService.generateEmailBody("one-time-password", emailInputs);
+    emailService.sendEmail(user.getEmail(), "Authy Demo: OTP to login into your account", emailBody);
   }
 
   public User getUser(String emailOrPhoneNumber) {

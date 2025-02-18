@@ -1,8 +1,8 @@
 import { Component } from '@angular/core';
 import { FormControl, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
-import { AuthService } from '../../../../core/services/auth.service';
 import { AuthApiService } from '../../auth-api.service';
-import { SignupRequest } from '../../../../types/Auth';
+import { SignupRequest } from '../../../../types/auth';
+import { LoadingState } from '../../../../types/loading-state';
 
 @Component({
   selector: 'app-signup',
@@ -13,6 +13,7 @@ import { SignupRequest } from '../../../../types/Auth';
   styleUrl: './signup.component.css'
 })
 export class SignupComponent {
+  submitState?: LoadingState;
 
   constructor(private authApiService: AuthApiService) {}
 
@@ -23,7 +24,9 @@ export class SignupComponent {
   });
 
   submit() {
-    this.authApiService.signup(this.signupForm.value as SignupRequest);
-    console.log(this.signupForm.value)
+    this.authApiService.signup(this.signupForm.value as SignupRequest).subscribe((state) => {
+      console.log(state);
+      this.submitState = state;
+    });
   }
 }

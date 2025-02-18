@@ -20,6 +20,6 @@ public interface ActivationTokenRepository extends JpaRepository<ActivationToken
 
   @Modifying
   @Transactional
-  @Query("UPDATE ActivationToken a SET a.usedAt = :usedAt WHERE a.user.id = :userId and a.usedAt IS NOT NULL")
+  @Query("UPDATE ActivationToken a SET a.usedAt = :usedAt WHERE a.user.id = :userId and a.usedAt IS NULL")
   void markAllTokensAsUsed(@Param("userId") UUID userId, @Param("usedAt") LocalDateTime usedAt);
 }

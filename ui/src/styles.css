@@ -1,0 +1,37 @@
+@import 'reset.css';
+@import 'theme.css';
+@import url('https://fonts.googleapis.com/css2?family=Noto+Sans:ital,wght@0,100..900;1,100..900&display=swap');
+
+:root {
+  --font-name: 'Noto Sans';
+}
+
+:root {
+  --font-sans: var(--font-name), ui-sans-serif, system-ui, sans-serif, 'Apple Color Emoji', 'Segoe UI Emoji', 'Segoe UI Symbol',
+  'Noto Color Emoji';
+  --font-serif: var(--font-name), ui-serif, Georgia, Cambria, 'Times New Roman', Times, serif;
+  --font-mono:
+    ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, 'Liberation Mono', 'Courier New', monospace;
+}
+
+body {
+  background-color: var(--background);
+  color: var(--text-1);
+  font-family: var(--font-sans);
+}
+
+.demo {
+  color: var(--text-2);
+}
+
+input[type='text'], input[type='email'] {
+  border: 1px solid var(--gray-7);
+}
+
+button {
+  padding: 8px 12px;
+  border-radius: 4px;
+  border: 1px solid var(--border-1);
+  background-color: var(--accent-1);
+  color: var(--color-contrast);
+}

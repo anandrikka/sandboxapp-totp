@@ -1,1 +1,9 @@
-<p>login works!</p>
+@if (otpRequested) {
+  <input type="email" [(ngModel)]="email">
+  <input type="text" [(ngModel)]="otp">
+  <input type="checkbox" [(ngModel)]="rememberMe"> Remember Me
+  <button (click)="submitLogin()">Login</button>
+} @else {
+  <input type="text" [(ngModel)]="email">
+  <button (click)="submitOTP()">Send OTP</button>
+}

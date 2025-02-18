@@ -13,7 +13,7 @@
   Activate your account using the link:
   <a
     th:href="${requestHost} + '/activate?email=' + ${user.email} +'&activation_code=' + ${activationCode}"
-    th:text="${requestHost} + '/activate?code=' + ${activationCode}" />
+    th:text="${requestHost} + '/activate?email=' + ${user.email} +'&activation_code=' + ${activationCode}" />
   <p>The link will be active for the next 1 hour.</p>
 </div>
 </body>

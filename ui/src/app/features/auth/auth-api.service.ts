@@ -1,6 +1,7 @@
 import { Injectable } from '@angular/core';
-import { SignupRequest } from '../../types/Auth';
 import { ApiService } from '../../core/services/api.service';
+import { SignupRequest } from '../../types/auth';
+import { lastValueFrom } from 'rxjs';
 
 @Injectable({
   providedIn: 'root'
@@ -12,12 +13,28 @@ export class AuthApiService extends ApiService {
   }
 
   signup(body: SignupRequest) {
-    this.httpClient.post(this.buildUrl('/signup'), body).subscribe((response) => {
-      console.log(response);
-    })
+    return this.requestState(this.httpClient.post(this.buildUrl('/signup'), body));
   }
 
   signupVerification(email: string, token: string) {
-    this.httpClient.get(this.buildUrl(`/signup_verification?email=${email}&token=${token}`))
+    return this.requestState(
+      this.httpClient.get(this.buildUrl(`/signup_verification?email=${email}&token=${token}`))
+    );
+  }
+
+  requestLoginOTP(email: string) {
+    return lastValueFrom(
+      this.httpClient.post(this.buildUrl('/signin_token'), { email })
+    );
+  }
+
+  verifyLoginOTP(email: string, otp: string, rememberMe: boolean) {
+    return lastValueFrom(
+      this.httpClient.post(this.buildUrl('/verify_signin'), {
+        email,
+        otp,
+        rememberMe
+      })
+    );
   }
 }

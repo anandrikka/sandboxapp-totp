@@ -1,10 +1,7 @@
 package dev.sandboxapp.totp.models;
 
 import jakarta.persistence.*;
-import lombok.AllArgsConstructor;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
-import lombok.Setter;
+import lombok.*;
 
 import java.time.LocalDateTime;
 import java.util.UUID;
@@ -15,6 +12,7 @@ import java.util.UUID;
 @Setter
 @AllArgsConstructor
 @NoArgsConstructor
+@Builder
 public class AccessToken extends Auditable {
 
   @Id
@@ -34,7 +32,6 @@ public class AccessToken extends Auditable {
   @JoinColumn(name = "user_id")
   private User user;
 
-  @ManyToOne
-  @JoinColumn(name = "device_id")
-  private Device device;
+  @Column(updatable = false, nullable = false)
+  private String deviceToken;
 }

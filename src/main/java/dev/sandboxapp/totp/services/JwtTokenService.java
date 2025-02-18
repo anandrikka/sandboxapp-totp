@@ -25,7 +25,7 @@ public class JwtTokenService {
       .builder()
       .claims()
       .add(claims)
-      .issuer("sandboxapp.dev")
+      .issuer("totp.sandboxapp.dev")
       .subject(user.usableId())
       .issuedAt(new Date())
       .expiration(new Date(System.currentTimeMillis() + EXPIRATION_TIME))
