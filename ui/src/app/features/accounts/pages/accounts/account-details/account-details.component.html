@@ -1,1 +1,6 @@
 <p>account-details works!</p>
+@if (loaded) {
+  Passcode: {{ activePasscode }}
+  countdown: {{ countdown }}
+  All Passcodes: {{ JSON.stringify(passcodes) }}
+}

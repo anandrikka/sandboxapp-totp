@@ -39,4 +39,7 @@ public class Account extends Auditable {
   @JsonIgnore
   @JoinColumn(nullable = false, name = "user_id")
   public User user;
+
+  @Column(nullable = false, updatable = false)
+  public String algorithm = "SHA1";
 }

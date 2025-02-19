@@ -1,2 +1,8 @@
-<p>accounts works!</p>
+<div>
+  <div style="display: flex; gap: 16px; flex-direction: row; margin-bottom: 16px">
+    @for (item of accounts; track item.id) {
+      <button (click)="accountClicked(item.id)">{{ item.name }}</button>
+    }
+  </div>
+</div>
 <router-outlet></router-outlet>

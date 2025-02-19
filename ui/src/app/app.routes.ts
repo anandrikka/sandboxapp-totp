@@ -18,7 +18,7 @@ export const routes: Routes = [
         component: AccountsComponent,
         children: [
           {
-            path: 'account/:id',
+            path: 'accounts/:id',
             component: AccountDetailsComponent
           }
         ]

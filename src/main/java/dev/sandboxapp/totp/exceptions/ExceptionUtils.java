@@ -2,6 +2,8 @@ package dev.sandboxapp.totp.exceptions;
 
 import org.springframework.http.HttpStatus;
 
+import java.util.UUID;
+
 public class ExceptionUtils {
 
   public static GlobalException userNotFound(String email) {
@@ -48,6 +50,14 @@ public class ExceptionUtils {
       .code("token.refresh_failed")
       .status(HttpStatus.UNAUTHORIZED)
       .message("Unauthorized User.")
+    );
+  }
+
+  public static GlobalException accountNotFound(UUID id) {
+    return new GlobalException(builder -> builder
+      .status(HttpStatus.NOT_FOUND)
+      .message("Account not found")
+      .code("account.not_found")
     );
   }
 }

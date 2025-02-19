@@ -1,9 +1,12 @@
 package dev.sandboxapp.totp.controllers;
 
+import dev.sandboxapp.totp.dto.AccountOneTimePasscodes;
 import dev.sandboxapp.totp.dto.requests.AccountRequest;
+import dev.sandboxapp.totp.exceptions.ExceptionUtils;
 import dev.sandboxapp.totp.models.Account;
 import dev.sandboxapp.totp.models.User;
 import dev.sandboxapp.totp.repositories.AccountRepository;
+import dev.sandboxapp.totp.services.TotpService;
 import dev.sandboxapp.totp.utils.AuthUtils;
 import lombok.AllArgsConstructor;
 import org.springframework.http.HttpStatus;
@@ -19,6 +22,7 @@ import java.util.UUID;
 public class AccountsController {
 
   private final AccountRepository accountRepo;
+  private final TotpService totpService;
 
   @PostMapping("")
   ResponseEntity createAccount(@RequestBody AccountRequest request) {
@@ -45,5 +49,11 @@ public class AccountsController {
   List<Account> fetchAccounts() {
     var userId = AuthUtils.loggedInUserId();
     return accountRepo.findAllByUserId(userId);
+  }
+
+  @GetMapping("/{id}/otps")
+  AccountOneTimePasscodes fetchOTPs(@PathVariable UUID id) {
+    var account = accountRepo.findById(id).orElseThrow(() -> ExceptionUtils.accountNotFound(id));
+    return totpService.generateMultipleOTP(account);
   }
 }

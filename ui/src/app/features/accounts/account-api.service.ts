@@ -11,6 +11,10 @@ export class AccountApiService extends ApiService {
   }
 
   getAllAccounts() {
-    return this.requestState(this.httpClient.get(this.path))
+    return this.requestState<any[]>(this.httpClient.get(this.path))
+  }
+
+  getOtps(id: string) {
+    return this.httpClient.get(this.buildUrl(`/${id}/otps`))
   }
 }

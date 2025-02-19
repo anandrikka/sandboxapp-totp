@@ -15,7 +15,7 @@ export abstract class ApiService {
     return `${this.path}${path ?? ''}`
   }
 
-  requestState<T>(source$: Observable<T>): Observable<LoadingState<T>> {
+  requestState<T>(source$: Observable<any>): Observable<LoadingState<T>> {
     return source$.pipe(
       map((data) => ({ state: 'loaded' as const, data })),
       catchError((error) => of({ state: 'error' as const, error })),

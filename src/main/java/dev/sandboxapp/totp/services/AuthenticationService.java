@@ -40,6 +40,9 @@ public class AuthenticationService {
   @Value("${host.identifier}")
   private String host;
 
+  @Value("${spring.profiles.active:default}")
+  private String activeProfile;
+
   @Transactional
   public void createAccount(SignupRequest request) throws MessagingException {
     var user = new User();
@@ -55,6 +58,7 @@ public class AuthenticationService {
     sendActivationEmail(user, activationToken.getToken());
   }
 
+  @Transactional
   public void verifySignupRequest(String email, String token) {
     var user = userRepo.findByEmail(email).orElseThrow(() -> ExceptionUtils.userNotFound(email));
     var activationToken = activationTokenRepo.findByUserIdAndToken(user.getId(), token)
@@ -95,7 +99,9 @@ public class AuthenticationService {
       .user(user)
       .build();
     accessTokenRepo.save(accessToken);
-    sendLoginOTP(user, token);
+    if (!"development".equals(activeProfile)) {
+      sendLoginOTP(user, token);
+    }
   }
 
   @Transactional
@@ -153,24 +159,5 @@ public class AuthenticationService {
     emailInputs.put("user", user);
     var emailBody = emailService.generateEmailBody("one-time-password", emailInputs);
     emailService.sendEmail(user.getEmail(), "Authy Demo: OTP to login into your account", emailBody);
-  }
-
-  public User getUser(String emailOrPhoneNumber) {
-    return userRepo
-      .findByEmail(emailOrPhoneNumber)
-      .orElseThrow(() -> new EntityNotFoundException("User not found: " + emailOrPhoneNumber));
-  }
-
-  public String generateSignInOtp(String emailOrPhoneNumber) throws CodeGenerationException {
-    var user = getUser(emailOrPhoneNumber);
-    return this.totpService.generateSignInOtp(user.usableId(), TIME_PERIOD);
-  }
-
-  public String verifySignInOtp(String emailOrPhoneNumber, String otp) throws Exception {
-    var user = getUser(emailOrPhoneNumber);
-    if (this.totpService.verifySignInOtp(user.usableId(), otp, TIME_PERIOD)) {
-      return jwtTokenService.generateToken(user);
-    }
-    throw new Exception("Invalid sign in otp");
   }
 }
