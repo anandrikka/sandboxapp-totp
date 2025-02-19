@@ -1,1 +1,4 @@
-<p>devices works!</p>
+<p>Devices</p>
+@for (device of devices; track device.id) {
+  <div>{{ device.deviceName }}</div>
+}
