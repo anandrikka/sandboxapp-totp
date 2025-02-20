@@ -8,7 +8,8 @@
         <span>{{ _account.name }} token is:</span>
       </div>
       <div class="text-4xl font-mono text-center tracking-widest mb-6">
-        {{ activePasscode?.code }}
+        <!-- Without content there is a flickering on the UI when toggled b/w accounts -->
+        {{ activePasscode?.code ?? '.' }}
       </div>
       <div class="text-center text-md">
         Your token expires in

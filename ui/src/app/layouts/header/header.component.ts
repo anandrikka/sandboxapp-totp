@@ -1,5 +1,6 @@
 import { Component } from '@angular/core';
 import { GearIconComponent } from '../../lib/components/icons/gear-icon.component';
+import { AuthService } from '../../core/services/auth.service';
 
 @Component({
   selector: 'app-header',
@@ -10,5 +11,6 @@ import { GearIconComponent } from '../../lib/components/icons/gear-icon.componen
   styleUrl: './header.component.css'
 })
 export class HeaderComponent {
-
+  constructor(protected authService: AuthService) {
+  }
 }
