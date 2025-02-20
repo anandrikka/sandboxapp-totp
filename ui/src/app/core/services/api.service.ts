@@ -1,7 +1,7 @@
 import { inject, signal } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { catchError, map, Observable, of, startWith } from 'rxjs';
-import { LoadingState } from '../../types/loading-state';
+import { LoadingState } from '../../types';
 
 export abstract class ApiService {
   protected httpClient = inject(HttpClient);

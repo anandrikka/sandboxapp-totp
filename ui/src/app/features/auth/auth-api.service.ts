@@ -1,7 +1,7 @@
 import { Injectable } from '@angular/core';
 import { ApiService } from '../../core/services/api.service';
-import { SignupRequest } from '../../types/auth';
 import { lastValueFrom } from 'rxjs';
+import { SignupRequest } from '../../types';
 
 @Injectable({
   providedIn: 'root'

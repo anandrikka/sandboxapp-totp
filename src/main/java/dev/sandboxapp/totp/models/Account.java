@@ -32,7 +32,6 @@ public class Account extends Auditable {
   public Integer digits = 6;
 
   @Column
-  @JsonIgnore
   public Integer period = 30;
 
   @ManyToOne

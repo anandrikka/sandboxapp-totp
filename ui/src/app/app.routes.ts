@@ -4,34 +4,27 @@ import { AccountDetailsComponent } from './features/accounts/pages/accounts/acco
 import { SignupComponent } from './features/auth/pages/signup/signup.component';
 import { LoginComponent } from './features/auth/pages/login/login.component';
 import { SignupVerificationComponent } from './features/auth/pages/signup-verification/signup-verification.component';
-import { BaseComponent } from './layouts/base/base.component';
 import { DevicesComponent } from './features/devices/pages/devices/devices.component';
 import { ProfileDetailsComponent } from './features/users/pages/profile-details/profile-details.component';
 
 export const routes: Routes = [
   {
     path: '',
-    component: BaseComponent,
+    component: AccountsComponent,
     children: [
       {
-        path: '',
-        component: AccountsComponent,
-        children: [
-          {
-            path: 'accounts/:id',
-            component: AccountDetailsComponent
-          }
-        ]
-      },
-      {
-        path: 'profile',
-        component: ProfileDetailsComponent
-      },
-      {
-        path: 'devices',
-        component: DevicesComponent
+        path: 'accounts/:id',
+        component: AccountDetailsComponent
       }
     ]
+  },
+  {
+    path: 'profile',
+    component: ProfileDetailsComponent
+  },
+  {
+    path: 'devices',
+    component: DevicesComponent
   },
   {
     path: 'signup',

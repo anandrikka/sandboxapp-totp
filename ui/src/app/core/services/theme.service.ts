@@ -9,12 +9,12 @@ export class ThemeService {
 
   loadTheme(): void {
     const savedTheme = localStorage.getItem(this.storageKey);
-    const prefersDark = window.matchMedia('(prefers-color-scheme: dark)').matches;
     if (savedTheme) {
       this.setTheme(savedTheme as any);
-    } else {
-      this.setTheme(prefersDark ? 'dark' : 'light');
+      return;
     }
+    const prefersDark = window.matchMedia('(prefers-color-scheme: dark)').matches;
+    this.setTheme(prefersDark ? 'dark' : 'light');
   }
 
   toggleTheme() {

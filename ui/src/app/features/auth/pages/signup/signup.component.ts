@@ -1,8 +1,7 @@
 import { Component } from '@angular/core';
 import { FormControl, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
 import { AuthApiService } from '../../auth-api.service';
-import { SignupRequest } from '../../../../types/auth';
-import { LoadingState } from '../../../../types/loading-state';
+import { LoadingState, SignupRequest } from '../../../../types';
 
 @Component({
   selector: 'app-signup',

@@ -1,6 +1,20 @@
-<p>account-details works!</p>
-@if (loaded) {
-  Passcode: {{ activePasscode }}
-  countdown: {{ countdown }}
-  All Passcodes: {{ JSON.stringify(passcodes) }}
-}
+<div>
+  <div class="h-60 border border-border shadow-sm rounded-md p-4">
+    <div class="flex flex-col items-center justify-center">
+      <div class="font-bold text-xl mb-2 tracking-widest">
+        <span>{{ _account.issuer }}</span>
+      </div>
+      <div class="text-muted-foreground text-lg text-center mb-4">
+        <span>{{ _account.name }} token is:</span>
+      </div>
+      <div class="text-4xl font-mono text-center tracking-widest mb-6">
+        {{ activePasscode?.code }}
+      </div>
+      <div class="text-center text-md">
+        Your token expires in
+        <span class="text-a11 font-mono font-bold text-xl underline">
+          {{ countdown.toString().padStart(2, '0') }}</span> seconds
+      </div>
+    </div>
+  </div>
+</div>

@@ -1,7 +1,8 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, Input, OnInit } from '@angular/core';
 import { AccountApiService } from '../../../account-api.service';
 import { ActivatedRoute } from '@angular/router';
-import { interval, switchMap, tap } from 'rxjs';
+import { distinctUntilChanged, interval, of, Subject, switchMap, tap } from 'rxjs';
+import { Account } from '../../../../../types';
 
 interface OTP {
   counter: number
@@ -14,52 +15,54 @@ interface OTP {
   templateUrl: './account-details.component.html',
   styleUrl: './account-details.component.css'
 })
-export class AccountDetailsComponent implements OnInit {
+export class AccountDetailsComponent {
+  protected _account!: Account;
+  account$ = new Subject<Account>();
   passcodes: OTP[] = [];
   period: number = 30;
   countdown: number;
-  activePasscode?: string
+  activePasscode?: OTP
   loaded: boolean = false;
 
-  constructor(
-    private accountApiService: AccountApiService,
-    private route: ActivatedRoute
-  ) {
-    this.countdown = this.getCountdownValue();
+  @Input() set account(value: Account) {
+    this._account = value;
+    this.account$.next(value);
   }
 
-  ngOnInit() {
-    this.route.params.pipe(
-      tap((params) => this.resetState()),
-      switchMap((params) => this.fetchPasscodes(params['id'])),
+  constructor(
+    private accountApiService: AccountApiService
+  ) {
+    this.countdown = this.getCountdownValue();
+    this.account$.pipe(
+      tap((account) => this.resetState(account)),
+      switchMap((account) => this.fetchPasscodes(account.id)),
       tap(() => {
-        this.loaded = true;
+        this.loaded = true
       }),
       switchMap(() => interval(1000).pipe(
         tap(() => {
           this.countdown--;
           if (this.countdown === 0) {
-            this.passcodes = [...this.passcodes.slice(1)]
+            this.passcodes = this.passcodes.filter((passcode) => passcode.counter > this.activePasscode!.counter)
             this.setActivePasscode();
             this.countdown = this.getCountdownValue();
-            this.passcodes.length === 1 && this.fetchPasscodes(this.route.snapshot.params['id']).subscribe()
+            this.passcodes.length === 1 && this.fetchPasscodes(this._account.id).subscribe()
           }
         })
       ))
-    ).subscribe()
+    ).subscribe();
   }
 
-  resetState() {
+  resetState(account: Account) {
     this.loaded = false;
     this.passcodes = [];
-    this.period = 30;
+    this.period = account.period;
     this.activePasscode = undefined;
   }
 
   fetchPasscodes(accountId: string) {
     return this.accountApiService.getOtps(accountId).pipe(
       tap((response: any) => {
-        this.period = response.period;
         const newPasscodes = [ ...this.passcodes ];
         response.passcodes.forEach((passcode: any) => {
           if (!newPasscodes.find((c) => passcode.code === c.code)) {
@@ -75,7 +78,7 @@ export class AccountDetailsComponent implements OnInit {
 
   setActivePasscode() {
     const counter = Math.floor(Date.now() / 1000 / this.period);
-    this.activePasscode = this.passcodes.find((passcode) => passcode.counter === counter)?.code;
+    this.activePasscode = this.passcodes.find((passcode) => passcode.counter === counter);
   }
 
   getCountdownValue() {
