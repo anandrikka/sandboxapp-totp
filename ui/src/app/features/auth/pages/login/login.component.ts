@@ -4,6 +4,14 @@ import { FormsModule } from '@angular/forms';
 import { CommonModule } from '@angular/common';
 import { Router } from '@angular/router';
 
+enum LoginState {
+  INITIATED,
+  EMAIL_INVALID ,
+  OTP_REQUESTED,
+  INVALID_OTP,
+  SUCCESS
+}
+
 @Component({
   selector: 'app-login',
   imports: [
@@ -14,10 +22,10 @@ import { Router } from '@angular/router';
   styleUrl: './login.component.css'
 })
 export class LoginComponent {
+  state: LoginState = LoginState.INITIATED;
   email = '';
   rememberMe = false;
   otp = '';
-  otpRequested = false;
 
   constructor(
     private authApiService: AuthApiService,
@@ -31,18 +39,26 @@ export class LoginComponent {
         this.otp,
         this.rememberMe
       )
+      this.state = LoginState.SUCCESS;
       await this.router.navigate(['/'])
     } catch(err) {
-      console.log(err);
+      this.state = LoginState.INVALID_OTP;
     }
   }
 
   async submitOTP() {
     try {
       await this.authApiService.requestLoginOTP(this.email);
-      this.otpRequested = true;
+      this.state = LoginState.OTP_REQUESTED;
     } catch(err) {
-      console.log(err);
+      this.state = LoginState.EMAIL_INVALID;
     }
   }
+
+  gotoSignup() {
+    this.router.navigate(['/signup']);
+  }
+
+  protected readonly LoginStage = LoginState;
+  protected readonly LoginState = LoginState;
 }

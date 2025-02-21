@@ -184,9 +184,10 @@ Accent: #3D63DD, Gray: #8B8D98
   --color-muted: var(--gray-3);
   --color-muted-foreground: var(--gray-11);
   --color-accent: var(--blue-9);
-  --color-accent-foreground: var(--gray-12);
+  --color-accent-foreground: #fff;
   --color-border: var(--gray-6);
   --color-input: var(--gray-7);
   --color-input-psuedo: var(--blue-8);
   --color-ring: var(--blue-7);
+  --color-danger: var(--color-red-500);
 }
