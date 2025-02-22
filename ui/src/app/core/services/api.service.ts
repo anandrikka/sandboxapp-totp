@@ -15,11 +15,11 @@ export abstract class ApiService {
     return `${this.path}${path ?? ''}`
   }
 
-  requestState<T>(source$: Observable<any>): Observable<LoadingState<T>> {
+  requestState(source$: Observable<any>): Observable<LoadingState> {
     return source$.pipe(
-      map((data) => ({ state: 'loaded' as const, data })),
-      catchError((error) => of({ state: 'error' as const, error })),
-      startWith({ state: 'loading' as const })
+      map((data) => ({ status: 'loaded' as const, data })),
+      catchError((error) => of({ status: 'error' as const, error: error.error })),
+      startWith({ status: 'loading' as const })
     );
   }
 }

@@ -1,8 +1,38 @@
-<div>
-  <form [formGroup]="signupForm">
-    <input type="text" formControlName="firstName" />
-    <input type="text" formControlName="lastName" />
-    <input type="email" formControlName="email" />
-    <button type="submit" (click)="submit()">Signup</button>
-  </form>
+<div class="card max-w-sm mx-auto mt-16">
+  <div class="card__header">
+    <div class="card__header__title">Signup</div>
+  </div>
+  <div class="card__body">
+    @if (isRegisteredSuccessfully) {
+      <div class="alert alert--success mb-4">
+        Registered successfully!
+      </div>
+    }
+    <form [formGroup]="signupForm" class="flex flex-col justify-center">
+      <div class="input-group">
+        <label class="input-group__label required">First Name</label>
+        <input type="text" class="input-group__input" [ngClass]="{ 'danger': isControlInvalid('firstName')}" formControlName="firstName">
+      </div>
+      <div class="input-group">
+        <label class="input-group__label required">Last Name</label>
+        <input type="text" class="input-group__input" [ngClass]="{ 'danger': isControlInvalid('lastName')}" formControlName="lastName">
+      </div>
+      <div class="input-group">
+        <label class="input-group__label required">Email</label>
+        <input type="email" class="input-group__input" [ngClass]="{ 'danger': isControlInvalid('email') || isEmailRegistered }" formControlName="email">
+        @if (isEmailRegistered) {
+          <div class="input-group__error">
+            Email already registered
+          </div>
+        }
+      </div>
+      <button class="btn btn--primary" type="submit" (click)="submit()">Signup</button>
+      <div class="mt-4 text-center text-sm">
+        <span>Already have an account?&nbsp;</span>
+        <a (click)="gotoLogin()" class="underline underline-offset-4">
+          Login
+        </a>
+      </div>
+    </form>
+  </div>
 </div>

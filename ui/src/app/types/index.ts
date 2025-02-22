@@ -11,4 +11,12 @@ export interface SignupRequest {
   email: string
 }
 
-export type LoadingState<T = unknown> = { state: 'loading' } | { state: 'loaded', data: T } | { state: 'error', error: Error }
+export interface IError {
+  code: string
+  message: string
+  title: string
+  status: number
+  meta?: Record<string, string>
+}
+
+export type LoadingState = { status: 'loading' | 'initiate' } | { status: 'loaded'; data: any } | { status: 'error'; error: IError | Partial<IError> }

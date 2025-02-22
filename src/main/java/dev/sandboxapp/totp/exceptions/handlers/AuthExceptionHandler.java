@@ -15,7 +15,7 @@ public class AuthExceptionHandler {
     var error = ErrorRecord.builder()
       .message(ex.getMessage())
       .status(HttpStatus.UNAUTHORIZED)
-      .code("auth.access_denied")
+      .code("auth.accessDenied")
       .build();
     return new ResponseEntity<>(error, HttpStatus.UNAUTHORIZED);
   }

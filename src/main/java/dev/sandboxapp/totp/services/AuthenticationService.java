@@ -45,6 +45,9 @@ public class AuthenticationService {
 
   @Transactional
   public void createAccount(SignupRequest request) throws MessagingException {
+    if (userRepo.findByEmail(request.email()).isPresent()) {
+      throw ExceptionUtils.emailRegistered(request.email());
+    }
     var user = new User();
     user.setFirstName(request.firstName());
     user.setLastName(request.lastName());
@@ -55,19 +58,21 @@ public class AuthenticationService {
     activationToken.setExpiresAt(LocalDateTime.now().plusMinutes(60));
     user.getActivationTokens().add(activationToken);
     userRepo.save(user);
-    sendActivationEmail(user, activationToken.getToken());
+    if (!"development".equals(activeProfile)) {
+      sendActivationEmail(user, activationToken.getToken());
+    }
   }
 
   @Transactional
   public void verifySignupRequest(String email, String token) {
-    var user = userRepo.findByEmail(email).orElseThrow(() -> ExceptionUtils.userNotFound(email));
+    var user = userRepo.findByEmail(email).orElseThrow(() -> ExceptionUtils.userNotFound(email, "auth.signup.verify.invalidEmail"));
     var activationToken = activationTokenRepo.findByUserIdAndToken(user.getId(), token)
-      .orElseThrow(() -> ExceptionUtils.tokenNotFound(email, token));
+      .orElseThrow(() -> ExceptionUtils.tokenNotFound(email, token, "auth.signup.verify.tokenNotFound"));
     if (activationToken.getUsedAt() != null) {
-      ExceptionUtils.raiseTokenUsed(email, token);
+      ExceptionUtils.raiseActivationTokenInvalid(email, token);
     }
     if (activationToken.getExpiresAt().isBefore(LocalDateTime.now())) {
-      ExceptionUtils.raiseTokenExpired(email, token);
+      ExceptionUtils.raiseTokenExpired(email, token, "auth.signup.verify.tokenExpired");
     }
     user.setActivated(true);
     userRepo.save(user);
@@ -77,7 +82,7 @@ public class AuthenticationService {
 
   @Transactional
   public void resendVerificationLink(String email) throws MessagingException {
-    var user = userRepo.findByEmail(email).orElseThrow(() -> ExceptionUtils.userNotFound(email));
+    var user = userRepo.findByEmail(email).orElseThrow(() -> ExceptionUtils.userNotFound(email, "auth.signup.user.notFound"));
     activationTokenRepo.markAllTokensAsUsed(user.getId(), LocalDateTime.now());
     var newToken = new ActivationToken();
     newToken.setExpiresAt(LocalDateTime.now().plusMinutes(60));
@@ -89,7 +94,7 @@ public class AuthenticationService {
 
   @Transactional
   public void sendSignInToken(String email, String deviceToken) throws MessagingException {
-    var user = userRepo.findByEmail(email).orElseThrow(() -> ExceptionUtils.userNotFound(email));
+    var user = userRepo.findByEmail(email).orElseThrow(() -> ExceptionUtils.userNotFound(email, "auth.signin.user.notFound"));
     var token = AuthUtils.generateLoginToken();
     accessTokenRepo.markAllTokensAsUsed(user.getId(), LocalDateTime.now());
     var accessToken = AccessToken.builder()
@@ -106,11 +111,11 @@ public class AuthenticationService {
 
   @Transactional
   public Device verifySignInToken(SignInVerificationRequest request, String deviceName, String deviceToken) {
-    var user = userRepo.findByEmail(request.email()).orElseThrow(() -> ExceptionUtils.userNotFound(request.email()));
+    var user = userRepo.findByEmail(request.email()).orElseThrow(() -> ExceptionUtils.userNotFound(request.email(), "auth.signin.user.notFound"));
     var accessToken = accessTokenRepo.findValidAccessToken(user.getId(), deviceToken, request.otp())
-      .orElseThrow(() -> ExceptionUtils.tokenNotFound(request.email(), request.otp()));
+      .orElseThrow(() -> ExceptionUtils.tokenNotFound(request.email(), request.otp(), "auth.signin.token.notFound"));
     if (LocalDateTime.now().isAfter(accessToken.getExpiresAt())) {
-      ExceptionUtils.raiseTokenExpired(request.email(), request.otp());
+      ExceptionUtils.raiseTokenExpired(request.email(), request.otp(), "auth.signin.verify.tokenExpired");
     }
     var device = deviceRepo.findByUserIdAndDeviceToken(user.getId(), deviceToken).orElse(
       Device.builder()

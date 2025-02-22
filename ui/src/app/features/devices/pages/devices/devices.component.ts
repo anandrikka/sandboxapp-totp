@@ -15,8 +15,8 @@ export class DevicesComponent implements OnInit {
 
   ngOnInit() {
     this.deviceApiService.fetchAllDevices().subscribe((response) => {
-      this.loading = response.state === 'loading';
-      if (response.state === 'loaded') {
+      this.loading = response.status === 'loading';
+      if (response.status === 'loaded') {
         this.devices = response.data as any[];
       }
     })

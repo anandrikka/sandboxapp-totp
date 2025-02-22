@@ -27,7 +27,7 @@ export class AccountsComponent implements OnInit {
 
   ngOnInit() {
     this.accountApiService.getAllAccounts().subscribe((response) => {
-      if (response.state === 'loaded') {
+      if (response.status === 'loaded') {
         this.loading = false;
         this.accounts = response.data;
         this.activeAccount = this.accounts[0];

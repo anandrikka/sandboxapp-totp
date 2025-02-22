@@ -9,7 +9,7 @@
 }
 
 .input-group {
-  @apply flex flex-col gap-2 mb-4;
+  @apply flex flex-col mb-4;
 }
 
 .input-group--inline {
@@ -17,22 +17,29 @@
 }
 
 .input-group__label {
-  @apply text-sm font-bold;
+  @apply text-sm font-bold mb-2;
+
+  &.required:after {
+    margin-left: var(--spacing);
+    content: '*';
+    color: var(--color-danger);
+  }
 }
+
 
 .input-group__input {
   @apply flex h-9 w-full rounded-md border border-input bg-transparent px-3 py-1 text-base placeholder:text-muted-foreground focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-ring md:text-sm;
 }
 
 .input-group__error {
-  @apply text-red-500 text-sm font-light;
+  @apply text-sm text-danger-foreground;
 }
 
 .input-group__input.danger {
-  @apply border-red-400;
+  @apply border-danger-border;
 
   &:focus {
-    @apply focus-visible:ring-1 focus-visible:ring-red-600
+    @apply focus-visible:ring-1 focus-visible:ring-danger-ring
   }
 }
 
@@ -64,3 +71,14 @@
   @apply p-6 pt-0 flex items-center;
 }
 
+.alert {
+  @apply p-4 bg-transparent rounded-md text-base;
+
+  &.alert--danger {
+    @apply bg-danger text-danger-foreground;
+  }
+
+  &.alert--success {
+    @apply bg-success text-success-foreground;
+  }
+}

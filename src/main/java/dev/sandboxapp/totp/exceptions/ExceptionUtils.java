@@ -6,18 +6,18 @@ import java.util.UUID;
 
 public class ExceptionUtils {
 
-  public static GlobalException userNotFound(String email) {
+  public static GlobalException userNotFound(String email, String code) {
     return new GlobalException(builder -> builder
-      .code("user.not_found")
+      .code(code)
       .status(HttpStatus.NOT_FOUND)
       .message("User not found.")
       .meta("email", email)
     );
   }
 
-  public static GlobalException tokenNotFound(String email, String token) {
+  public static GlobalException tokenNotFound(String email, String token, String code) {
     return new GlobalException(builder -> builder
-      .code("token.not_found")
+      .code(code)
       .status(HttpStatus.NOT_FOUND)
       .message("Token is invalid")
       .meta("email", email)
@@ -25,9 +25,9 @@ public class ExceptionUtils {
     );
   }
 
-  public static GlobalException raiseTokenUsed(String email, String token) {
+  public static GlobalException raiseActivationTokenInvalid(String email, String token) {
     throw new GlobalException(builder -> builder
-      .code("token.used")
+      .code("auth.signup.verify.tokenAlreadyUsed")
       .status(HttpStatus.CONFLICT)
       .message("Token already used.")
       .meta("email", email)
@@ -35,9 +35,18 @@ public class ExceptionUtils {
     );
   }
 
-  public static GlobalException raiseTokenExpired(String email, String token) {
+  public static GlobalException emailRegistered(String email) {
     throw new GlobalException(builder -> builder
-      .code("token.expired")
+      .code("auth.signup.emailRegistered")
+      .status(HttpStatus.BAD_REQUEST)
+      .message("Account already exists.")
+      .meta("email", email)
+    );
+  }
+
+  public static GlobalException raiseTokenExpired(String email, String token, String code) {
+    throw new GlobalException(builder -> builder
+      .code(code)
       .status(HttpStatus.BAD_REQUEST)
       .message("Token expired.")
       .meta("email", email)
@@ -47,7 +56,7 @@ public class ExceptionUtils {
 
   public static void raiseRefreshFailed() {
     throw new GlobalException(builder -> builder
-      .code("token.refresh_failed")
+      .code("auth.token.refreshFailed")
       .status(HttpStatus.UNAUTHORIZED)
       .message("Unauthorized User.")
     );
@@ -57,7 +66,7 @@ public class ExceptionUtils {
     return new GlobalException(builder -> builder
       .status(HttpStatus.NOT_FOUND)
       .message("Account not found")
-      .code("account.not_found")
+      .code("account.notFound")
     );
   }
 }
