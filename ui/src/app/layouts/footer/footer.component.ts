@@ -16,13 +16,19 @@ import { Router } from '@angular/router';
   template: `
     <div class="max-w-xl mx-auto px-4 py-2 h-12 flex items-center">
       <div class="flex flex-row justify-around items-center font-medium w-full">
-        <app-footer-icon (iconClick)="gotoSettings('/settings/profile')" [activated]="true">
+        <app-footer-icon
+          (iconClick)="gotoSettings('/settings/profile')"
+          [activated]="router.url.includes('/profile')">
           <app-user-icon></app-user-icon>
         </app-footer-icon>
-        <app-footer-icon (iconClick)="gotoSettings('/settings/accounts')">
+        <app-footer-icon
+          (iconClick)="gotoSettings('/settings/accounts')"
+          [activated]="router.url.includes('/accounts')">
           <app-qr-code-icon></app-qr-code-icon>
         </app-footer-icon>
-        <app-footer-icon (iconClick)="gotoSettings('/settings/devices')">
+        <app-footer-icon
+          (iconClick)="gotoSettings('/settings/devices')"
+          [activated]="router.url.includes('/devices')">
           <app-device-icon></app-device-icon>
         </app-footer-icon>
       </div>
@@ -32,7 +38,7 @@ import { Router } from '@angular/router';
 })
 export class FooterComponent {
 
-  constructor(private router: Router) {}
+  constructor(protected router: Router) {}
 
   gotoSettings(path: string) {
     this.router.navigate([path]);

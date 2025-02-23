@@ -8,7 +8,7 @@ import { Component, EventEmitter, Input, Output } from '@angular/core';
       type="button"
       class="flex flex-col items-center justify-between cursor-pointer"
       (click)="iconClick.emit()">
-      <span class="fill-foreground w-5 h-5" [class.fill-accent]="activated">
+      <span class="w-5 h-5" [class]="activated ? 'fill-accent' : 'fill-foreground'">
         <ng-content></ng-content>
       </span>
     </button>
