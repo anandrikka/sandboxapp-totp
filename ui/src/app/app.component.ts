@@ -1,13 +1,19 @@
 import { Component } from '@angular/core';
-import { RouterOutlet } from '@angular/router';
+import { ActivatedRoute, RouterOutlet } from '@angular/router';
 import { HeaderComponent } from './layouts/header/header.component';
 
 @Component({
   selector: 'app-root',
   imports: [RouterOutlet, HeaderComponent],
-  templateUrl: './app.component.html',
-  styleUrl: './app.component.css'
+  template: `
+    <div class="flex flex-col h-lvh w-full">
+      <header class="app-header"></header>
+      <router-outlet />
+    </div>
+  `
 })
 export class AppComponent {
-  title = 'ui';
+  title = 'Authy';
+
+  constructor(private route: ActivatedRoute) {}
 }

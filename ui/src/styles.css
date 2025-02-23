@@ -82,3 +82,15 @@
     @apply bg-success text-success-foreground;
   }
 }
+
+.app-header {
+  @apply border border-border w-full;
+}
+
+.app-content {
+  @apply grow-1 overflow-y-auto;
+}
+
+.app-footer {
+  @apply border-t border-border w-full
+}

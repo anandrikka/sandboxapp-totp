@@ -1,6 +1,6 @@
-<div class="flex flex-col relative">
+<div class="flex flex-col relative max-w-xl pt-16 px-4 mx-auto">
   @if (accounts.length > 0) {
-    <div class="flex flex-col sticky z-48 bg-background top-[50px]">
+    <div class="flex flex-col sticky z-48 bg-background top-0">
       <app-account-details [account]="activeAccount!" />
     </div>
   }
@@ -17,6 +17,25 @@
         <p class="text-sm w-full mt-1 overflow-hidden text-ellipsis text-nowrap">{{ item.name }}</p>
       </div>
     }
+    @for (item of accounts; track item.id) {
+      <div class="p-6 border border-border shadow-sm rounded-md flex flex-col items-center justify-between hover:bg-a5 aspect-square hover:border-a5 cursor-pointer" (click)="accountClicked(item)">
+        <p class="w-9 h-9 font-bold text-lg text-center tracking-wider">AR</p>
+        <p class="text-sm w-full mt-1 overflow-hidden text-ellipsis text-nowrap">{{ item.name }}</p>
+      </div>
+    }
+    @for (item of accounts; track item.id) {
+      <div class="p-6 border border-border shadow-sm rounded-md flex flex-col items-center justify-between hover:bg-a5 aspect-square hover:border-a5 cursor-pointer" (click)="accountClicked(item)">
+        <p class="w-9 h-9 font-bold text-lg text-center tracking-wider">AR</p>
+        <p class="text-sm w-full mt-1 overflow-hidden text-ellipsis text-nowrap">{{ item.name }}</p>
+      </div>
+    }
+    @for (item of accounts; track item.id) {
+      <div class="p-6 border border-border shadow-sm rounded-md flex flex-col items-center justify-between hover:bg-a5 aspect-square hover:border-a5 cursor-pointer" (click)="accountClicked(item)">
+        <p class="w-9 h-9 font-bold text-lg text-center tracking-wider">AR</p>
+        <p class="text-sm w-full mt-1 overflow-hidden text-ellipsis text-nowrap">{{ item.name }}</p>
+      </div>
+    }
   </div>
 </div>
-<router-outlet></router-outlet>
+
+

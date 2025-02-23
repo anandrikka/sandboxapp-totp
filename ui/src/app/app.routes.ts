@@ -10,13 +10,7 @@ import { ProfileDetailsComponent } from './features/users/pages/profile-details/
 export const routes: Routes = [
   {
     path: '',
-    component: AccountsComponent,
-    children: [
-      {
-        path: 'accounts/:id',
-        component: AccountDetailsComponent
-      }
-    ]
+    component: AccountsComponent
   },
   {
     path: 'profile',
