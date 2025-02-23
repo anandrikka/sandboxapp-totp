@@ -92,5 +92,5 @@
 }
 
 .app-footer {
-  @apply border-t border-border w-full
+  @apply border-t border-border w-full;
 }

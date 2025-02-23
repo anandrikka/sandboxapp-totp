@@ -29,7 +29,7 @@ export const appConfig: ApplicationConfig = {
     }),
     provideAppInitializer(() => {
       const authService = inject(AuthService);
-      // authService.self();
+      authService.self();
     })
   ]
 };
