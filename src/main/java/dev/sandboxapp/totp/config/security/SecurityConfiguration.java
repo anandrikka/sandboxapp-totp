@@ -37,6 +37,8 @@ public class SecurityConfiguration {
             "/heartbeat",
             "/",
             "/index.html",
+            "/*.css",
+            "/*js",
             "/assets/**",
             "/api/v1/auth/**"
           ).permitAll()
