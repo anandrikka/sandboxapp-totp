@@ -3,6 +3,7 @@ import { AuthApiService } from '../../auth-api.service';
 import { FormsModule } from '@angular/forms';
 import { CommonModule } from '@angular/common';
 import { Router } from '@angular/router';
+import { UserApiService } from '../../../users/user-api.service';
 
 enum LoginState {
   INITIATED,
@@ -29,6 +30,7 @@ export class LoginComponent {
 
   constructor(
     private authApiService: AuthApiService,
+    private userApiService: UserApiService,
     private router: Router
   ) {}
 
@@ -40,6 +42,7 @@ export class LoginComponent {
         this.rememberMe
       )
       this.state = LoginState.SUCCESS;
+      await this.userApiService.self();
       await this.router.navigate(['/'])
     } catch(err) {
       this.state = LoginState.INVALID_OTP;

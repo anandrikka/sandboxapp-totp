@@ -1,11 +1,13 @@
 <div class="flex flex-col">
   <app-settings-header></app-settings-header>
-  <div class="bg-g3 p-2 rounded-lg flex flex-row gap-4 items-center justify-center cursor-pointer mb-8 mt-10" (click)="changeState.emit('change-email')">
+  <div class="bg-g3 p-2 rounded-lg mt-10">
+    {{ authService.user()['firstName'] }} {{ authService.user()['lastName'] }}
+  </div>
+  <div class="bg-g3 p-2 rounded-lg flex flex-row gap-4 items-center justify-center cursor-pointer mb-8 mt-8">
     <fa-icon [icon]="faEnvelope"></fa-icon>
     <div class="grow-1">
       {{ authService.user()['email'] }}
     </div>
-    <fa-icon [icon]="faChevronRight" />
   </div>
   <div class="bg-danger text-danger-foreground p-2 rounded-lg flex flex-row items-center justify-center cursor-pointer" (click)="changeState.emit('delete-account')">
     Delete Account
