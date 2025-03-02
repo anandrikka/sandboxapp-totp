@@ -11,7 +11,7 @@ import { Router } from '@angular/router';
   template: `
     <div class="max-w-xl flex flex-wrap justify-between items-center mx-auto h-12 px-4">
       <span class="font-bold text-lg">Authy</span>
-      @if (authService.loggedIn()) {
+      @if(authService.loggedIn() && !isSettingsRoute) {
         <app-gear-icon (iconClick)="onSettingsClick()"></app-gear-icon>
       }
     </div>
@@ -20,8 +20,12 @@ import { Router } from '@angular/router';
 export class HeaderComponent {
   constructor(
     protected authService: AuthService,
-    private router: Router
+    protected router: Router
   ) {
+  }
+
+  get isSettingsRoute() {
+    return this.router.url.includes('/settings');
   }
 
   onSettingsClick() {

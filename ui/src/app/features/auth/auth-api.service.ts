@@ -1,7 +1,7 @@
 import { Injectable } from '@angular/core';
 import { ApiService } from '../../core/services/api.service';
 import { lastValueFrom } from 'rxjs';
-import { SignupRequest } from '../../types';
+import { UserForm } from '../../types';
 
 @Injectable({
   providedIn: 'root'
@@ -12,7 +12,7 @@ export class AuthApiService extends ApiService {
     super('/api/v1/auth')
   }
 
-  signup(body: SignupRequest) {
+  signup(body: UserForm) {
     return this.requestState(this.httpClient.post(this.buildUrl('/signup'), body));
   }
 

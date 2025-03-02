@@ -5,10 +5,14 @@ export interface Account {
   period: number
 }
 
-export interface SignupRequest {
+export interface UserForm {
   firstName: string
   lastName: string
   email: string
+}
+
+export interface User extends UserForm {
+  id: string
 }
 
 export interface IError {

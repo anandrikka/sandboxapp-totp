@@ -22,8 +22,11 @@ public class UsersController {
     return ResponseEntity.ok(userRepo.findById(id).get());
   }
 
-  @DeleteMapping()
-  void deleteUser() {}
+  @DeleteMapping("")
+  void deleteUser() {
+    var id = AuthUtils.loggedInUserId();
+    userRepo.deleteById(id);
+  }
 
   @GetMapping("/self")
   ResponseEntity<User> self() {

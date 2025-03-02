@@ -14,4 +14,9 @@ export class UserApiService extends ApiService {
   self() {
     return lastValueFrom(this.httpClient.get(this.buildUrl("/self")))
   }
+
+  delete() {
+    return this.httpClient.delete(this.path);
+  }
+
 }

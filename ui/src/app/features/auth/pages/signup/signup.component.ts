@@ -1,7 +1,7 @@
 import { Component, OnInit, signal } from '@angular/core';
 import { FormBuilder, FormControl, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
 import { AuthApiService } from '../../auth-api.service';
-import { LoadingState, SignupRequest } from '../../../../types';
+import { LoadingState, UserForm } from '../../../../types';
 import { Router } from '@angular/router';
 import { NgClass } from '@angular/common';
 import { ErrorCodes } from '../../../../lib/constants/error-codes';
@@ -51,7 +51,7 @@ export class SignupComponent implements OnInit {
   submit() {
     this.signupForm.markAllAsTouched();
     if (this.signupForm.valid) {
-      this.authApiService.signup(this.signupForm.value as SignupRequest)
+      this.authApiService.signup(this.signupForm.value as UserForm)
         .subscribe((state) => {
           this.signupState = state
           if (this.signupState.status === 'loaded') {

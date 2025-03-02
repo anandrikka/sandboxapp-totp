@@ -13,4 +13,8 @@ export class DeviceApiService extends ApiService {
   fetchAllDevices() {
     return this.requestState(this.httpClient.get(this.path))
   }
+
+  delete(id: string) {
+    return this.httpClient.delete(this.buildUrl(`/${id}`))
+  }
 }
