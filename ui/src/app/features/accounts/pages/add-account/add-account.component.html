@@ -1,0 +1,28 @@
+<div class="flex flex-col">
+  <app-settings-sub-header title="Add Account" (cancel)="closeAddAccount()"></app-settings-sub-header>
+  <form [formGroup]="accountForm" class="mt-2">
+    <div class="input-group">
+      <label class="input-group__label">Issuer</label>
+      <input class="input-group__input" type="text" formControlName="issuer" />
+    </div>
+    <div class="input-group">
+      <label class="input-group__label">Name</label>
+      <input class="input-group__input" type="text" formControlName="name" />
+    </div>
+    <div class="input-group">
+      <label class="input-group__label">Secret</label>
+      <input class="input-group__input" type="text" formControlName="secret" />
+    </div>
+    <div class="input-group">
+      <label class="input-group__label">Algorithm</label>
+      <select class="input-group__input" formControlName="algorithm">
+        <option value="HmacSHA1">SHA1</option>
+        <option value="HmacSHA256">SHA256</option>
+        <option value="HmacSHA512">SHA512</option>
+      </select>
+    </div>
+    <div class="flex justify-center">
+      <button class="btn btn--primary" (click)="addAccount()">Submit</button>
+    </div>
+  </form>
+</div>

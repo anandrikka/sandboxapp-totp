@@ -3,6 +3,8 @@ import { AccountApiService } from '../../account-api.service';
 import { AccountDetailsComponent } from './account-details/account-details.component';
 import { PlusIconComponent } from '../../../../lib/components/icons/plus-icon.component';
 import { Account } from '../../../../types';
+import { AuthService } from '../../../../core/services/auth.service';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-landing',
@@ -18,10 +20,13 @@ export class LandingComponent implements OnInit {
   activeAccount?: Account;
 
   constructor(
-    private accountApiService: AccountApiService
+    private accountApiService: AccountApiService,
+    private authService: AuthService,
+    private router: Router
   ) {}
 
   ngOnInit() {
+    this.authService.self()
     this.accountApiService.getAllAccounts().subscribe((response) => {
       if (response.status === 'loaded') {
         this.loading = false;
@@ -29,6 +34,10 @@ export class LandingComponent implements OnInit {
         this.activeAccount = this.accounts[0];
       }
     })
+  }
+
+  addAccount() {
+    this.router.navigate(['/accounts/new'])
   }
 
   accountClicked(account: Account) {

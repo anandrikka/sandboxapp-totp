@@ -31,4 +31,6 @@ export class HeaderComponent {
   onSettingsClick() {
     this.router.navigate(['/settings']);
   }
+
+  protected readonly Object = Object;
 }

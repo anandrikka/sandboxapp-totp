@@ -42,7 +42,6 @@ export class LoginComponent {
         this.rememberMe
       )
       this.state = LoginState.SUCCESS;
-      await this.userApiService.self();
       await this.router.navigate(['/'])
     } catch(err) {
       this.state = LoginState.INVALID_OTP;

@@ -17,4 +17,8 @@ export class AccountApiService extends ApiService {
   getOtps(id: string) {
     return this.httpClient.get(this.buildUrl(`/${id}/otps`))
   }
+
+  create(account: Record<string, any>) {
+    return this.httpClient.post(this.path, account)
+  }
 }

@@ -71,7 +71,9 @@ public class AuthenticationController {
     var device = authService.verifySignInToken(body, deviceName, deviceToken);
     var jwtToken = jwtTokenService.generateToken(device.getUser());
     response.addCookie(createCookie("_auth", jwtToken, jwtProperties.getExpirationTime()));
-    response.addCookie(createCookie("_ref_id", device.getId().toString(), Integer.MAX_VALUE));
+    if (body.rememberMe()) {
+      response.addCookie(createCookie("_ref_id", device.getId().toString(), Integer.MAX_VALUE));
+    }
   }
 
   @GetMapping("/refresh_token")
